@@ -47,4 +47,13 @@ public class Question {
     public void setCorrectAnswer(String correctAnswer) {
         this.correctAnswer = correctAnswer;
     }
+
+    public String toString() {
+        return String.format("""
+                Question:
+                Question text = %s
+                Options = %s
+                Correct answer = %s
+                """, questionText, options, correctAnswer);
+    }
 }

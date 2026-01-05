@@ -4,6 +4,7 @@ import com.app.questionnaire.model.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -15,6 +16,7 @@ import static org.springframework.security.core.userdetails.User.builder;
 public class QuizUserDetailsService implements UserDetailsService {
 
     private List<User> users = new ArrayList<>();
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -29,5 +31,22 @@ public class QuizUserDetailsService implements UserDetailsService {
                 .password(user.getPassword())
                 .roles("USER")
                 .build();
+    }
+
+    public User registerUsers(String username, String password, String email, String role) {
+
+        boolean userExists = users.stream()
+                .anyMatch(u -> u.getUsername().equals(username));
+        if(userExists) {
+            throw new IllegalArgumentException("User already exists.");
+        }
+        User newUser = new User();
+        newUser.setUsername(username);
+        newUser.setPassword(passwordEncoder.encode(password));
+        newUser.setEmail(email);
+        newUser.setRole(role);
+
+        users.add(newUser);
+        return newUser;
     }
 }

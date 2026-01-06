@@ -18,6 +18,10 @@ public class QuizUserDetailsService implements UserDetailsService {
     private List<User> users = new ArrayList<>();
     private final PasswordEncoder passwordEncoder;
 
+    public QuizUserDetailsService(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
+    }
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 

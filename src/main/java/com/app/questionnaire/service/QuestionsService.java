@@ -11,8 +11,16 @@ import java.util.List;
 public class QuestionsService {
 
     private Map<Integer, Question> questions = new HashMap<>();
+    private int nextId = 1;
 
     public List<Question> loadQuizzes() {
         return questions.values().stream().toList();
+    }
+
+    public Question addQuiz(Question question) {
+        question.setId(nextId);
+        questions.put(nextId, question);
+        nextId++;
+        return question;
     }
 }

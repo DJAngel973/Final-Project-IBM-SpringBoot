@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Question {
-    private int id;
+    private Integer id;
     private String questionText;
     private List<String> options;
     private String correctAnswer;
 
-    public Question(int id, String questionText, List<String> options, String correctAnswer) {
+    public Question(Integer id, String questionText, List<String> options, String correctAnswer) {
         this.id = id;
         this.questionText = questionText;
         this.options = new ArrayList<>(options);
@@ -20,10 +20,10 @@ public class Question {
         this.options = new ArrayList<>();
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

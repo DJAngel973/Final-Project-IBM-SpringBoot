@@ -31,4 +31,11 @@ public class QuestionsService {
         questions.put(question.getId(), question);
         return question;
     }
+
+    public Question deleteQuiz(Integer id) {
+        if (!questions.containsKey(id)) {
+            throw new IllegalArgumentException(String.format("Question with ID %d does not exist.", id));
+        }
+        return questions.remove(id);
+    }
 }

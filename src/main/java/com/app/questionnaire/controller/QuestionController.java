@@ -10,11 +10,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/")
 public class QuestionController {
 
+    // Get para recuperar la pagina de inicio de sesión.
     @GetMapping("/login")
     public String showLogin() {
         return "login";
     }
 
+    // Get para recuperar la pagina de registro.
     @GetMapping("/register")
     public String showRegister(Model model) {
         model.addAttribute("user", new User());

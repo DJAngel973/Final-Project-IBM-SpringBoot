@@ -31,7 +31,11 @@ public class QuestionController {
 
     // Post para registrar usuario
     @PostMapping("/register")
-    public String registerUser(@ModelAttribute User user, Model model) {
+    public String registerUser(@ModelAttribute User user, @RequestParam String confirmPassword, Model model) {
+        if (!user.getPassword().equals(confirmPassword)) {
+            model.addAttribute("error", "The passwords do not match.");
+            return "register";
+        }
         try {
             userDetailsService.registerUsers(
                     user.getUsername(),

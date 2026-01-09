@@ -2,7 +2,12 @@ package com.app.questionnaire.model;
 
 public class User {
     private String username;
+
+    @Email
     private String email;
+
+    @NotBlank
+    @Size(min = 13, message = "Minimum 13 characters.")
     private String password;
     private String role;
 

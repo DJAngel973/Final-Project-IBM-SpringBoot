@@ -1,5 +1,6 @@
 package com.app.questionnaire.controller;
 
+import com.app.questionnaire.model.Question;
 import com.app.questionnaire.service.QuizUserDetailsService;
 import jakarta.validation.Valid;
 import org.springframework.ui.Model;
@@ -53,5 +54,12 @@ public class QuestionController {
             model.addAttribute("error", "The user already exists");
             return "register";
         }
+    }
+
+    // Get para recuperar la página de agregar cuestionarios
+    @GetMapping("/questionnaires")
+    public String showAddQuestionnaires(Model model) {
+        model.addAttribute("question", new Question());
+        return "questionnaires";
     }
 }

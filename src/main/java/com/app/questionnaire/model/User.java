@@ -2,16 +2,21 @@ package com.app.questionnaire.model;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 public class User {
+    @NotBlank
     private String username;
 
-    @Email
+    @NotBlank(message = "Email is required.")
+    @Email(message = "Email address must be valid.")
     private String email;
 
     @NotBlank
     @Size(min = 13, message = "Minimum 13 characters.")
+    @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).*$",
+            message = "The password must contain uppercase letters, numbers, and special characters.")
     private String password;
     private String role;
 

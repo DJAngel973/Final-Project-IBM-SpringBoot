@@ -1,9 +1,11 @@
 package com.app.questionnaire.controller;
 
 import com.app.questionnaire.service.QuizUserDetailsService;
+import jakarta.validation.Valid;
 import org.springframework.ui.Model;
 import com.app.questionnaire.model.User;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
@@ -31,7 +33,10 @@ public class QuestionController {
 
     // Post para registrar usuario
     @PostMapping("/register")
-    public String registerUser(@ModelAttribute User user, @RequestParam String confirmPassword, Model model) {
+    public String registerUser(@Valid @ModelAttribute User user, BindingResult result, @RequestParam String confirmPassword, Model model) {
+        if (result.hasErrors()) {
+            return "register";
+        }
         if (!user.getPassword().equals(confirmPassword)) {
             model.addAttribute("error", "The passwords do not match.");
             return "register";

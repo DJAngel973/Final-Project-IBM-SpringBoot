@@ -1,12 +1,21 @@
 package com.app.questionnaire.model;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Question {
     private Integer id;
+
+    @NotBlank(message = "Question text is required.")
     private String questionText;
+
+    @Size(min = 3, max = 4, message = "There should be between 3 and 4 options.")
     private List<String> options;
+
+    @NotBlank(message = "The correct answer is required.")
     private String correctAnswer;
 
     public Question(Integer id, String questionText, List<String> options, String correctAnswer) {

@@ -18,6 +18,15 @@ public class QuestionsService {
     }
 
     public Question addQuiz(Question question) {
+        if (question == null) {
+            throw new IllegalArgumentException("The question cannot be null.");
+        }
+        if (!question.getOptions().contains(question.getCorrectAnswer())) {
+            throw new IllegalArgumentException("The correct answer must be one of the options.");
+        }
+        if (question.getOptions().size() != question.getOptions().stream().distinct().count()) {
+            throw new IllegalArgumentException("Options cannot have duplicates.");
+        }
         question.setId(nextId);
         questions.put(nextId, question);
         nextId++;

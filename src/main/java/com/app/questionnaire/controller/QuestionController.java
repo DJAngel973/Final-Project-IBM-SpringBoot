@@ -1,6 +1,7 @@
 package com.app.questionnaire.controller;
 
 import com.app.questionnaire.model.Question;
+import com.app.questionnaire.service.QuestionsService;
 import com.app.questionnaire.service.QuizUserDetailsService;
 import jakarta.validation.Valid;
 import org.springframework.ui.Model;
@@ -14,9 +15,11 @@ import org.springframework.web.bind.annotation.*;
 public class QuestionController {
 
     private final QuizUserDetailsService userDetailsService;
+    private final QuestionsService questionsService;
 
-    public QuestionController(QuizUserDetailsService userDetailsService) {
+    public QuestionController(QuizUserDetailsService userDetailsService, QuestionsService questionsService) {
         this.userDetailsService = userDetailsService;
+        this.questionsService = questionsService;
     }
 
     // Get para recuperar la pagina de inicio de sesión.
@@ -61,5 +64,21 @@ public class QuestionController {
     public String showAddQuestionnaires(Model model) {
         model.addAttribute("question", new Question());
         return "questionnaires";
+    }
+
+    // Post para agregar preguntas de cuestionarios
+    @PostMapping("/questionnaires")
+    public String addQuestion(@Valid @ModelAttribute Question question, BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            return "questionnaires";
+        }
+        try {
+            questionsService.addQuiz(question);
+            return "redirect:/questionnaires?success";
+        } catch (Exception error) {
+            model.addAttribute("error", "Error saving the question.");
+            model.addAttribute("question", question);
+            return "questionnaires";
+        }
     }
 }

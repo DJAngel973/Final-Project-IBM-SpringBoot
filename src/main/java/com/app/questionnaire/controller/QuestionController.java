@@ -94,4 +94,21 @@ public class QuestionController {
             return "redirect:/questionnaires";
         }
     }
+
+    // Put para editar preguntas de cuestionarios - para implementar el HTML con Thymeleaf solo aplica GET y POST.
+    @PostMapping("/questionnaires/edit/{id}")
+    public String editQuestions(@PathVariable Integer id, @Valid @ModelAttribute Question question, BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            model.addAttribute("question", question);
+            return  "edit-questionnaire";
+        }
+        try {
+            questionsService.updateQuestion(id, question);
+            return "redirect:/ questionnaire?updated";
+        } catch (IllegalArgumentException error) {
+            model.addAttribute("error", error.getMessage());
+            model.addAttribute("question", question);
+            return "edit-questionnaire";
+        }
+    }
 }

@@ -54,4 +54,19 @@ public class QuestionsService {
         }
         return questions.get(id);
     }
+
+    public Question updateQuestion(Integer id, Question updatedQuestion) {
+        if (!questions.containsKey(id)) {
+            throw new IllegalArgumentException(String.format("Question with ID %d does not exist.",id));
+        }
+        if (!updatedQuestion.getOptions().contains(updatedQuestion.getCorrectAnswer())) {
+            throw new IllegalArgumentException("The correct answer must be one of the options.");
+        }
+        if (updatedQuestion.getOptions().size() != updatedQuestion.getOptions().stream().distinct().count()) {
+            throw new IllegalArgumentException("Options cannot have duplicates.");
+        }
+        updatedQuestion.setId(id);
+        questions.put(id, updatedQuestion);
+        return updatedQuestion;
+    }
 }

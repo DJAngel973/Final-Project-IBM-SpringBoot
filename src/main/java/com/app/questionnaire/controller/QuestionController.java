@@ -104,11 +104,23 @@ public class QuestionController {
         }
         try {
             questionsService.updateQuestion(id, question);
-            return "redirect:/questionnaire?updated";
+            return "redirect:/questionnaires?updated";
         } catch (IllegalArgumentException error) {
             model.addAttribute("error", error.getMessage());
             model.addAttribute("question", question);
             return "edit-questionnaire";
+        }
+    }
+
+    // Delete para eliminar preguntas de cuestionarios - POST es compatible con HTML y Thymeleaf
+    @PostMapping("/questionnaires/delete/{id}")
+    public String deleteQuestion(@PathVariable Integer id, Model model) {
+        try {
+            questionsService.deleteQuiz(id);
+            return "redirect:/questionnaires?deleted";
+        } catch (IllegalArgumentException error) {
+            model.addAttribute("error", error.getMessage());
+            return "redirect:/questionnaires?error"
         }
     }
 }

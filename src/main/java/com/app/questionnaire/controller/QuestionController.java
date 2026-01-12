@@ -120,7 +120,7 @@ public class QuestionController {
             return "redirect:/questionnaires?deleted";
         } catch (IllegalArgumentException error) {
             model.addAttribute("error", error.getMessage());
-            return "redirect:/questionnaires?error"
+            return "redirect:/questionnaires?error";
         }
     }
 }

@@ -104,7 +104,7 @@ public class QuestionController {
         }
         try {
             questionsService.updateQuestion(id, question);
-            return "redirect:/ questionnaire?updated";
+            return "redirect:/questionnaire?updated";
         } catch (IllegalArgumentException error) {
             model.addAttribute("error", error.getMessage());
             model.addAttribute("question", question);

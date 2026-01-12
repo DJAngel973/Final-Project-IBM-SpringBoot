@@ -81,4 +81,17 @@ public class QuestionController {
             return "questionnaires";
         }
     }
+
+    // Get para recuperar la página de editar cuestionarios
+    @GetMapping("/questionnaires/edit/{id}")
+    public String showEditQuestionnaires(@PathVariable Integer id, Model model) {
+        try {
+            Question question = questionsService.findQuestionById(id);
+            model.addAttribute("question", question);
+            return "edit-questionnaire";
+        } catch (Exception error) {
+            model.addAttribute("error", "Question not found.");
+            return "redirect:/questionnaires";
+        }
+    }
 }

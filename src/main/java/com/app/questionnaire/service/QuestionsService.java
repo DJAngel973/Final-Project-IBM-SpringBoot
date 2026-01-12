@@ -47,4 +47,11 @@ public class QuestionsService {
         }
         return questions.remove(id);
     }
+
+    public Question findQuestionById(Integer id) {
+        if (!questions.containsKey(id)) {
+            throw new IllegalArgumentException((String.format("Question with ID %d does not exist.",id)));
+        }
+        return questions.get(id);
+    }
 }

@@ -84,7 +84,7 @@ public class QuestionController {
     }
 
     // Get para recuperar la página de editar cuestionarios
-    @GetMapping("/questionnaires/edit/{id}")
+    @GetMapping("/admin/questionnaires/edit/{id}")
     public String showEditQuestionnaires(@PathVariable Integer id, Model model) {
         try {
             Question question = questionsService.findQuestionById(id);
@@ -92,12 +92,12 @@ public class QuestionController {
             return "edit-questionnaire";
         } catch (Exception error) {
             model.addAttribute("error", "Question not found.");
-            return "redirect:/questionnaires";
+            return "redirect:/admin/questionnaires";
         }
     }
 
     // Put para editar preguntas de cuestionarios - para implementar el HTML con Thymeleaf solo aplica GET y POST.
-    @PostMapping("/questionnaires/edit/{id}")
+    @PostMapping("/admin/questionnaires/edit/{id}")
     public String editQuestions(@PathVariable Integer id, @Valid @ModelAttribute Question question, BindingResult result, Model model) {
         if (result.hasErrors()) {
             model.addAttribute("question", question);
@@ -105,7 +105,7 @@ public class QuestionController {
         }
         try {
             questionsService.updateQuestion(id, question);
-            return "redirect:/questionnaires?updated";
+            return "redirect:/admin/questionnaires?updated";
         } catch (IllegalArgumentException error) {
             model.addAttribute("error", error.getMessage());
             model.addAttribute("question", question);
@@ -114,14 +114,14 @@ public class QuestionController {
     }
 
     // Delete para eliminar preguntas de cuestionarios - POST es compatible con HTML y Thymeleaf
-    @PostMapping("/questionnaires/delete/{id}")
+    @PostMapping("/admin/questionnaires/delete/{id}")
     public String deleteQuestion(@PathVariable Integer id, Model model) {
         try {
             questionsService.deleteQuiz(id);
-            return "redirect:/questionnaires?deleted";
+            return "redirect:/admin/questionnaires?deleted";
         } catch (IllegalArgumentException error) {
             model.addAttribute("error", error.getMessage());
-            return "redirect:/questionnaires?error";
+            return "redirect:/admin/questionnaires?error";
         }
     }
 

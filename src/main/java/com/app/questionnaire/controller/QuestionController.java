@@ -1,6 +1,7 @@
 package com.app.questionnaire.controller;
 
 import com.app.questionnaire.model.Question;
+import com.app.questionnaire.model.Role;
 import com.app.questionnaire.service.QuestionsService;
 import com.app.questionnaire.service.QuizUserDetailsService;
 import jakarta.validation.Valid;
@@ -50,7 +51,7 @@ public class QuestionController {
                     user.getUsername(),
                     user.getPassword(),
                     user.getEmail(),
-                    "USER"
+                    user.getRole()
             );
             return "redirect:/login";
         } catch (IllegalArgumentException error) {
@@ -60,21 +61,21 @@ public class QuestionController {
     }
 
     // Get para recuperar la página de agregar cuestionarios
-    @GetMapping("/questionnaires")
+    @GetMapping("/admin/questionnaires")
     public String showAddQuestionnaires(Model model) {
         model.addAttribute("question", new Question());
         return "questionnaires";
     }
 
     // Post para agregar preguntas de cuestionarios
-    @PostMapping("/questionnaires")
+    @PostMapping("/admin/questionnaires")
     public String addQuestion(@Valid @ModelAttribute Question question, BindingResult result, Model model) {
         if (result.hasErrors()) {
             return "questionnaires";
         }
         try {
             questionsService.addQuiz(question);
-            return "redirect:/questionnaires?success";
+            return "redirect:/admin/questionnaires?success";
         } catch (Exception error) {
             model.addAttribute("error", "Error saving the question.");
             model.addAttribute("question", question);
@@ -122,5 +123,17 @@ public class QuestionController {
             model.addAttribute("error", error.getMessage());
             return "redirect:/questionnaires?error";
         }
+    }
+
+    // Get para recuperar preguntas de cuestionarios, en página de inicio, admin y user.
+    @GetMapping("/home")
+    public String showHome(Model model) {
+        model.addAttribute("questions", questionsService.loadQuizzes());
+        return "home";
+    }
+    @GetMapping("/admin")
+    public String showAdminPanel(Model model) {
+        model.addAttribute("questions", questionsService.loadQuizzes());
+        return "admin-panel";
     }
 }

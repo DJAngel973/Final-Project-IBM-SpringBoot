@@ -1,5 +1,6 @@
 package com.app.questionnaire.service;
 
+import com.app.questionnaire.model.Role;
 import com.app.questionnaire.model.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -25,19 +26,16 @@ public class QuizUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        User user = users.stream()
-                .filter(us -> us.getUsername().equals(username))
-                .findFirst()
-                .orElseThrow(() -> new UsernameNotFoundException("User not find."));
+        User user = findUserByUsername(username);
 
         return builder()
                 .username(user.getUsername())
                 .password(user.getPassword())
-                .roles("USER")
+                .roles(user.getRole().name())
                 .build();
     }
 
-    public User registerUsers(String username, String password, String email, String role) {
+    public User registerUsers(String username, String password, String email, Role role) {
 
         boolean userExists = users.stream()
                 .anyMatch(u -> u.getUsername().equals(username));
@@ -52,5 +50,12 @@ public class QuizUserDetailsService implements UserDetailsService {
 
         users.add(newUser);
         return newUser;
+    }
+
+    public User findUserByUsername(String username) {
+        return users.stream()
+                .filter(u -> u.getUsername().equals(username))
+                .findFirst()
+                .orElseThrow(()-> new UsernameNotFoundException("User not found."));
     }
 }

@@ -139,9 +139,9 @@ public class QuestionController {
 
     // Post para enviar respuestas
     @PostMapping("/home/answer/{id}")
-    public String sendAnswer(@PathVariable Integer id, @RequestParam String answer, Model model) {
+    public String sendAnswer(@PathVariable Integer id, @RequestParam Integer selectedOption, Model model) {
         try {
-            boolean isCorrect = questionsService.validateAnswer(id, answer);
+            boolean isCorrect = questionsService.validateAnswer(id, selectedOption);
             model.addAttribute("isCorrect", isCorrect);
             model.addAttribute("message", isCorrect ? "correct answer" : "iscorrect answer");
             return "redirect:/home?result=" + isCorrect;

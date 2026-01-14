@@ -136,4 +136,18 @@ public class QuestionController {
         model.addAttribute("questions", questionsService.loadQuizzes());
         return "admin-panel";
     }
+
+    // Post para enviar respuestas
+    @PostMapping("/home/answer/{id}")
+    public String sendAnswer(@PathVariable Integer id, @RequestParam String answer, Model model) {
+        try {
+            boolean isCorrect = questionsService.validateAnswer(id, answer);
+            model.addAttribute("isCorrect", isCorrect);
+            model.addAttribute("message", isCorrect ? "correct answer" : "iscorrect answer");
+            return "redirect:/home?result=" + isCorrect;
+        } catch (IllegalArgumentException error) {
+            model.addAttribute("error", error.getMessage());
+            return "redirect:/home?error";
+        }
+    }
 }

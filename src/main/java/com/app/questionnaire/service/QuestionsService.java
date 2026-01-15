@@ -69,4 +69,16 @@ public class QuestionsService {
         questions.put(id, updatedQuestion);
         return updatedQuestion;
     }
+
+     public boolean validateAnswer(Integer questionId, Integer selectedOptionIndex) {
+        Question question = findQuestionById(questionId);
+        if (question == null) {
+            throw new IllegalArgumentException("Question not found");
+        }
+        if (selectedOptionIndex == null || selectedOptionIndex < 1 || selectedOptionIndex > question.getOptions().size()) {
+            throw new IllegalArgumentException("Invalid optionn selected");
+        }
+        String selectedAnswer = question.getOptions().get(selectedOptionIndex -1);
+        return question.getCorrectAnswer().equalsIgnoreCase(selectedAnswer.trim());
+     }
 }

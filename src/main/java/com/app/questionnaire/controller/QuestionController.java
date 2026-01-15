@@ -139,11 +139,11 @@ public class QuestionController {
 
     // Post para enviar respuestas
     @PostMapping("/home/answer/{id}")
-    public String sendAnswer(@PathVariable Integer id, @RequestParam Integer selectedOption, Model model) {
+    public String sendAnswer(@PathVariable Integer id, @RequestParam Integer selectedOptionIndex, Model model) {
         try {
-            boolean isCorrect = questionsService.validateAnswer(id, selectedOption);
+            boolean isCorrect = questionsService.validateAnswer(id, selectedOptionIndex);
             model.addAttribute("isCorrect", isCorrect);
-            model.addAttribute("message", isCorrect ? "correct answer" : "iscorrect answer");
+            model.addAttribute("message", isCorrect ? "correct answer" : "isCorrect answer");
             return "redirect:/home?result=" + isCorrect;
         } catch (IllegalArgumentException error) {
             model.addAttribute("error", error.getMessage());

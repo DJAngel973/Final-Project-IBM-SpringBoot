@@ -76,7 +76,7 @@ public class QuestionsService {
             throw new IllegalArgumentException("Question not found");
         }
         if (selectedOptionIndex == null || selectedOptionIndex < 1 || selectedOptionIndex > question.getOptions().size()) {
-            throw new IllegalArgumentException("Invalid optionn selected");
+            throw new IllegalArgumentException("Invalid option selected");
         }
         String selectedAnswer = question.getOptions().get(selectedOptionIndex -1);
         return question.getCorrectAnswer().equalsIgnoreCase(selectedAnswer.trim());

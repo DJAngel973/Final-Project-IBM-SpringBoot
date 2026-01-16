@@ -3,6 +3,7 @@ package com.app.questionnaire.service;
 import com.app.questionnaire.model.Question;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
@@ -12,6 +13,7 @@ public class QuestionsService {
 
     private Map<Integer, Question> questions = new HashMap<>();
     private int nextId = 1;
+    private Map<String, Map<Integer, String>> userAnswersMap = new HashMap<>();
 
     public List<Question> loadQuizzes() {
         return questions.values().stream().toList();
@@ -70,7 +72,7 @@ public class QuestionsService {
         return updatedQuestion;
     }
 
-     public boolean validateAnswer(Integer questionId, Integer selectedOptionIndex) {
+     public boolean validateAnswer(String username, Integer questionId, Integer selectedOptionIndex) {
         Question question = findQuestionById(questionId);
         if (question == null) {
             throw new IllegalArgumentException("Question not found");
@@ -79,6 +81,23 @@ public class QuestionsService {
             throw new IllegalArgumentException("Invalid option selected");
         }
         String selectedAnswer = question.getOptions().get(selectedOptionIndex -1);
-        return question.getCorrectAnswer().equalsIgnoreCase(selectedAnswer.trim());
+        boolean isCorrect = question.getCorrectAnswer().equalsIgnoreCase(selectedAnswer.trim());
+        userAnswersMap.computeIfAbsent(username, k -> new HashMap<>())
+                .put(questionId, selectedAnswer);
+        return isCorrect;
+     }
+
+     public List<AnsweredQuestion> getUserResults(String username) {
+        if (!userAnswersMap.containsKey(username)) {
+            throw new IllegalArgumentException("No results found for user: " + username);
+        }
+        Map<Integer, String> userAnswers = userAnswersMap.get(username);
+        List<AnsweredQuestion> results = new ArrayList<>();
+        for (Map.Entry<Integer, String> entry : userAnswers.entrySet()) {
+            Question question = findQuestionById(entry.getKey());
+            String userAnswer = entry.getValue();
+            boolean isCorrect = question.getCorrectAnswer().equalsIgnoreCase(userAnswer.trim());
+            results.add(new AnsweredQuestion(question, username, userAnswer, isCorrect));
+        }
      }
 }

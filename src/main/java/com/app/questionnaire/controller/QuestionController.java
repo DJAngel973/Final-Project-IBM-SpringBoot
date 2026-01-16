@@ -63,14 +63,14 @@ public class QuestionController {
     }
 
     // Get to retrieve the add quizzes page.
-    @GetMapping("/admin/questionnaires")
+    @GetMapping("/quizlist")
     public String showAddQuestionnaires(Model model) {
         model.addAttribute("question", new Question());
         return "questionnaires";
     }
 
     // Get to retrieve the quiz editing page.
-    @PostMapping("/admin/questionnaires")
+    @PostMapping("/quizlist")
     public String addQuestion(@Valid @ModelAttribute Question question, BindingResult result, Model model) {
         if (result.hasErrors()) {
             return "questionnaires";
@@ -86,7 +86,7 @@ public class QuestionController {
     }
 
     // Get to retrieve the quiz editing page.
-    @GetMapping("/admin/questionnaires/edit/{id}")
+    @GetMapping("/quizlist/edit/{id}")
     public String showEditQuestionnaires(@PathVariable Integer id, Model model) {
         try {
             Question question = questionsService.findQuestionById(id);
@@ -99,7 +99,7 @@ public class QuestionController {
     }
 
     // Put to edit quiz questions - to implement HTML with Thymeleaf only apply GET and POST.
-    @PostMapping("/admin/questionnaires/edit/{id}")
+    @PostMapping("/quizlist/edit/{id}")
     public String editQuestions(@PathVariable Integer id, @Valid @ModelAttribute Question question, BindingResult result, Model model) {
         if (result.hasErrors()) {
             model.addAttribute("question", question);
@@ -116,7 +116,7 @@ public class QuestionController {
     }
 
     // Delete to remove quiz questions - POST is compatible with HTML and Thymeleaf.
-    @PostMapping("/admin/questionnaires/delete/{id}")
+    @PostMapping("quizlist/delete/{id}")
     public String deleteQuestion(@PathVariable Integer id, Model model) {
         try {
             questionsService.deleteQuiz(id);
@@ -128,7 +128,7 @@ public class QuestionController {
     }
 
     // Get to retrieve quiz questions, go to the home page, admin and user.
-    @GetMapping("/home")
+    @GetMapping("/quiz")
     public String showHome(Model model) {
         model.addAttribute("questions", questionsService.loadQuizzes());
         return "home";
@@ -140,7 +140,7 @@ public class QuestionController {
     }
 
     // Post to send answers.
-    @PostMapping("/home/answer/{username}")
+    @PostMapping("/quiz/answer/{username}")
     public String sendAnswer(@PathVariable String username,@PathVariable Integer id, @RequestParam Integer selectedOptionIndex, Model model) {
         try {
             boolean isCorrect = questionsService.validateAnswer(username, id, selectedOptionIndex);
@@ -154,7 +154,7 @@ public class QuestionController {
     }
 
     // Get to retrieve the results page.
-    @GetMapping("/home/answer/result/{username}")
+    @GetMapping("/quiz/answer/result/{username}")
     public String resultAnswer(@PathVariable String username, Model model) {
         try {
             var results = questionsService.getUserResults(username);

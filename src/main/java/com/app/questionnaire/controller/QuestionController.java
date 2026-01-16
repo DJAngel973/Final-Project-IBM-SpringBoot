@@ -140,10 +140,10 @@ public class QuestionController {
     }
 
     // Post to send answers.
-    @PostMapping("/home/answer/{id}")
-    public String sendAnswer(@PathVariable Integer id, @RequestParam Integer selectedOptionIndex, Model model) {
+    @PostMapping("/home/answer/{username}")
+    public String sendAnswer(@PathVariable String username,@PathVariable Integer id, @RequestParam Integer selectedOptionIndex, Model model) {
         try {
-            boolean isCorrect = questionsService.validateAnswer(id, selectedOptionIndex);
+            boolean isCorrect = questionsService.validateAnswer(username, id, selectedOptionIndex);
             model.addAttribute("isCorrect", isCorrect);
             model.addAttribute("message", isCorrect ? "correct answer" : "isCorrect answer");
             return "redirect:/home?result=" + isCorrect;
@@ -161,7 +161,7 @@ public class QuestionController {
             model.addAttribute("results",results);
             model.addAttribute("username", username);
             return "results";
-        } catch (PrivilegedActionException error) {
+        } catch (IllegalArgumentException error) {
             model.addAttribute("error", error.getMessage());
             return "redirect:home?error";
         }

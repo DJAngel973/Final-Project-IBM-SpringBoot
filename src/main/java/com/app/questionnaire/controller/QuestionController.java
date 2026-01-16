@@ -11,6 +11,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.PrivilegedActionException;
+
 @Controller
 @RequestMapping("/")
 public class QuestionController {
@@ -23,20 +25,20 @@ public class QuestionController {
         this.questionsService = questionsService;
     }
 
-    // Get para recuperar la pagina de inicio de sesión.
+    // Get to retrieve the login page.
     @GetMapping("/login")
     public String showLogin() {
         return "login";
     }
 
-    // Get para recuperar la pagina de registro.
+    // Get to retrieve the registration page.
     @GetMapping("/register")
     public String showRegister(Model model) {
         model.addAttribute("user", new User());
         return "register";
     }
 
-    // Post para registrar usuario
+    // Post to register user.
     @PostMapping("/register")
     public String registerUser(@Valid @ModelAttribute User user, BindingResult result, @RequestParam String confirmPassword, Model model) {
         if (result.hasErrors()) {
@@ -60,14 +62,14 @@ public class QuestionController {
         }
     }
 
-    // Get para recuperar la página de agregar cuestionarios
+    // Get to retrieve the add quizzes page.
     @GetMapping("/admin/questionnaires")
     public String showAddQuestionnaires(Model model) {
         model.addAttribute("question", new Question());
         return "questionnaires";
     }
 
-    // Post para agregar preguntas de cuestionarios
+    // Get to retrieve the quiz editing page.
     @PostMapping("/admin/questionnaires")
     public String addQuestion(@Valid @ModelAttribute Question question, BindingResult result, Model model) {
         if (result.hasErrors()) {
@@ -83,7 +85,7 @@ public class QuestionController {
         }
     }
 
-    // Get para recuperar la página de editar cuestionarios
+    // Get to retrieve the quiz editing page.
     @GetMapping("/admin/questionnaires/edit/{id}")
     public String showEditQuestionnaires(@PathVariable Integer id, Model model) {
         try {
@@ -96,7 +98,7 @@ public class QuestionController {
         }
     }
 
-    // Put para editar preguntas de cuestionarios - para implementar el HTML con Thymeleaf solo aplica GET y POST.
+    // Put to edit quiz questions - to implement HTML with Thymeleaf only apply GET and POST.
     @PostMapping("/admin/questionnaires/edit/{id}")
     public String editQuestions(@PathVariable Integer id, @Valid @ModelAttribute Question question, BindingResult result, Model model) {
         if (result.hasErrors()) {
@@ -113,7 +115,7 @@ public class QuestionController {
         }
     }
 
-    // Delete para eliminar preguntas de cuestionarios - POST es compatible con HTML y Thymeleaf
+    // Delete to remove quiz questions - POST is compatible with HTML and Thymeleaf.
     @PostMapping("/admin/questionnaires/delete/{id}")
     public String deleteQuestion(@PathVariable Integer id, Model model) {
         try {
@@ -125,7 +127,7 @@ public class QuestionController {
         }
     }
 
-    // Get para recuperar preguntas de cuestionarios, en página de inicio, admin y user.
+    // Get to retrieve quiz questions, go to the home page, admin and user.
     @GetMapping("/home")
     public String showHome(Model model) {
         model.addAttribute("questions", questionsService.loadQuizzes());
@@ -137,7 +139,7 @@ public class QuestionController {
         return "admin-panel";
     }
 
-    // Post para enviar respuestas
+    // Post to send answers.
     @PostMapping("/home/answer/{id}")
     public String sendAnswer(@PathVariable Integer id, @RequestParam Integer selectedOptionIndex, Model model) {
         try {
@@ -148,6 +150,20 @@ public class QuestionController {
         } catch (IllegalArgumentException error) {
             model.addAttribute("error", error.getMessage());
             return "redirect:/home?error";
+        }
+    }
+
+    // Get to retrieve the results page.
+    @GetMapping("/home/answer/result/{username}")
+    public String resultAnswer(@PathVariable String username, Model model) {
+        try {
+            var results = questionsService.getUserResults(username);
+            model.addAttribute("results",results);
+            model.addAttribute("username", username);
+            return "results";
+        } catch (PrivilegedActionException error) {
+            model.addAttribute("error", error.getMessage());
+            return "redirect:home?error";
         }
     }
 }

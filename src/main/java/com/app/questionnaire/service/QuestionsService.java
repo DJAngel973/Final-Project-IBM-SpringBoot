@@ -87,17 +87,18 @@ public class QuestionsService {
         return isCorrect;
      }
 
-     public List<AnsweredQuestion> getUserResults(String username) {
+     public Map<Question, Boolean> getUserResults(String username) {
         if (!userAnswersMap.containsKey(username)) {
             throw new IllegalArgumentException("No results found for user: " + username);
         }
         Map<Integer, String> userAnswers = userAnswersMap.get(username);
-        List<AnsweredQuestion> results = new ArrayList<>();
+        Map<Question, Boolean> results = new HashMap<>();
         for (Map.Entry<Integer, String> entry : userAnswers.entrySet()) {
             Question question = findQuestionById(entry.getKey());
             String userAnswer = entry.getValue();
             boolean isCorrect = question.getCorrectAnswer().equalsIgnoreCase(userAnswer.trim());
-            results.add(new AnsweredQuestion(question, username, userAnswer, isCorrect));
+            results.put(question, isCorrect);
         }
+        return results;
      }
 }

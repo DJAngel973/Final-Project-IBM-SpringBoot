@@ -1,7 +1,6 @@
 package com.app.questionnaire.controller;
 
 import com.app.questionnaire.model.Question;
-import com.app.questionnaire.model.Role;
 import com.app.questionnaire.service.QuestionsService;
 import com.app.questionnaire.service.QuizUserDetailsService;
 import jakarta.validation.Valid;
@@ -10,8 +9,6 @@ import com.app.questionnaire.model.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-
-import java.security.PrivilegedActionException;
 
 @Controller
 @RequestMapping("/")
@@ -23,6 +20,11 @@ public class QuestionController {
     public QuestionController(QuizUserDetailsService userDetailsService, QuestionsService questionsService) {
         this.userDetailsService = userDetailsService;
         this.questionsService = questionsService;
+    }
+
+    @GetMapping("")
+    public String showLandingPage() {
+        return "home-landing";
     }
 
     // Get to retrieve the login page.

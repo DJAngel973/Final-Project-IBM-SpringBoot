@@ -1,10 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
 </head>
 <body>
-
+    <div class="container">
+        <h1>Welcome to the quiz system</h1>
+        <div class="button-group">
+          <a th:href="@{/login}" class="btn btn-login">Login</a>
+          <a th:href="@{/register}" class="btn btn-register">Register</a>
+        </div>
+    </div>
 </body>
 </html>

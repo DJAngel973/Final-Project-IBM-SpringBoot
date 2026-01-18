@@ -7,10 +7,27 @@
 </head>
 <body>
     <div class="container">
-        <h1>Welcome to the quiz system</h1>
-        <div class="button-group">
-          <a th:href="@{/login}" class="btn btn-login">Login</a>
-          <a th:href="@{/register}" class="btn btn-register">Register</a>
+        <h1>Login</h1>
+        <div th:if="${param.error}" class="alert alert-error">
+            Incorrect username or password.
+        </div>
+        <div th:if="${param.logout}" class="alert alert-success">
+            You have successfully logged out.
+        </div>
+        <form th:action="@{/login}" method="post">
+            <div class="form-group">
+                <label for="username">User:</label>
+                <input type="text" id="username" name="username" required autofocus>
+            </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Enter</button>
+        </form>
+        <div class="footer">
+            <p>You don't have an account?<a th:href="@{/register}"> Register here</a></p>
+            <a th:href="@{/}"><- Back to top</a>
         </div>
     </div>
 </body>

@@ -23,12 +23,12 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/register", "/login").permitAll()
                         .requestMatchers("/quizlist/**").hasRole("ADMIN")
-                        .requestMatchers("/quiz").authenticated()
+                        .requestMatchers("/quiz/**").hasRole("USER")
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
                         .loginPage("/login")
-                        .defaultSuccessUrl("/home", true)
+                        .defaultSuccessUrl("/quiz", true)
                         .permitAll()
                 )
                 .logout(logout -> logout

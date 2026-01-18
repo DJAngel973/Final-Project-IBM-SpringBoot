@@ -77,7 +77,7 @@ public class QuestionController {
         }
         try {
             questionsService.addQuiz(question);
-            return "redirect:/admin/questionnaires?success";
+            return "redirect:/quizlist?success";
         } catch (Exception error) {
             model.addAttribute("error", "Error saving the question.");
             model.addAttribute("question", question);
@@ -94,7 +94,7 @@ public class QuestionController {
             return "edit-questionnaire";
         } catch (Exception error) {
             model.addAttribute("error", "Question not found.");
-            return "redirect:/admin/questionnaires";
+            return "redirect:/quizlist";
         }
     }
 
@@ -107,7 +107,7 @@ public class QuestionController {
         }
         try {
             questionsService.updateQuestion(id, question);
-            return "redirect:/admin/questionnaires?updated";
+            return "redirect:/quizlist?updated";
         } catch (IllegalArgumentException error) {
             model.addAttribute("error", error.getMessage());
             model.addAttribute("question", question);
@@ -116,14 +116,14 @@ public class QuestionController {
     }
 
     // Delete to remove quiz questions - POST is compatible with HTML and Thymeleaf.
-    @PostMapping("quizlist/delete/{id}")
+    @PostMapping("/quizlist/delete/{id}")
     public String deleteQuestion(@PathVariable Integer id, Model model) {
         try {
             questionsService.deleteQuiz(id);
-            return "redirect:/admin/questionnaires?deleted";
+            return "redirect:/quizlist?deleted";
         } catch (IllegalArgumentException error) {
             model.addAttribute("error", error.getMessage());
-            return "redirect:/admin/questionnaires?error";
+            return "redirect:/quizlist?error";
         }
     }
 
@@ -132,11 +132,6 @@ public class QuestionController {
     public String showHome(Model model) {
         model.addAttribute("questions", questionsService.loadQuizzes());
         return "home";
-    }
-    @GetMapping("/admin")
-    public String showAdminPanel(Model model) {
-        model.addAttribute("questions", questionsService.loadQuizzes());
-        return "admin-panel";
     }
 
     // Post to send answers.

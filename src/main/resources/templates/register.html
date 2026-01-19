@@ -1,10 +1,48 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
 </head>
 <body>
-
+<div class="container">
+    <h1>User registration</h1>
+    <div th:if="${error}" class="alert alert-error" th:href="${error}"></div>
+    <form th:action="@{/register}" th:object="${user}" method="post">
+        <div class="form-group">
+            <label for="username">User:</label>
+            <input type="text" id="username" th:field="*{username}" required>
+            <span th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="error"></span>
+        </div>
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" id="email" th:field="*{email}" required>
+            <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="error"></span>
+        </div>
+        <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" id="password" th:field="*{password}" required>
+            <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="error"></span>
+        </div>
+        <div class="form-group">
+            <label for="confirmpassword">Confirm Password:</label>
+            <input type="password" id="confirmpassword" name="confirmPassword" required>
+        </div>
+        <div class="form-group">
+            <label for="role">Role:</label>
+            <select id="role" th:field="*{role}" required>
+                <option value="">Select...</option>
+                <option value="USER">User</option>
+                <option value="ADMIN">Administrator</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Register</button>
+    </form>
+    <div class="footer">
+        <p>Do you already have an account?<a th:href="@{/login}"> Log in here</a></p>
+        <a th:href="@{/}"><- Back to top</a>
+    </div>
+</div>
 </body>
 </html>

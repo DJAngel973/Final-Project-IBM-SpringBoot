@@ -57,7 +57,10 @@ public class QuestionController {
                     user.getEmail(),
                     user.getRole()
             );
-            return "redirect:/login";
+            String roleName = user.getRole().equals("ADMIN") ? "Administrator" : "User";
+            model.addAttribute("success", String.format("Ok! User %s has been registered with role %s.", user.getUsername(), roleName));
+            model.addAttribute("user", new User());
+            return "register";
         } catch (IllegalArgumentException error) {
             model.addAttribute("error", "The user already exists");
             return "register";

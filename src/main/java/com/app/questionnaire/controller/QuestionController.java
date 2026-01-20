@@ -40,12 +40,24 @@ public class QuestionController {
         return "register";
     }
 
-    // Post to register user.
+    // Post to register user
+    /**
+     * Processes the registration of a new user in the system.
+     * <p>Validates that the passwords match, registers the user, and displays a success or error message depending on the result</p>
+     * @param user User object containing the form data
+     * @param result result of the Bean Validation check
+     * @param confirmPassword confirmation password from the form
+     * @param model model user to pass attributes to the view
+     * @return name of the "register" view with success or error messages
+     * @throws IllegalArgumentException if the user already exists (handled internally)
+     * */
     @PostMapping("/register")
     public String registerUser(@Valid @ModelAttribute User user, BindingResult result, @RequestParam String confirmPassword, Model model) {
+        // Validate Bean Validation errors.
         if (result.hasErrors()) {
             return "register";
         }
+        // Verify that the passwords match.
         if (!user.getPassword().equals(confirmPassword)) {
             model.addAttribute("error", "The passwords do not match.");
             return "register";

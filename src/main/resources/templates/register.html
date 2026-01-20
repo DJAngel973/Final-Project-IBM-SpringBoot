@@ -8,7 +8,8 @@
 <body>
 <div class="container">
     <h1>User registration</h1>
-    <div th:if="${error}" class="alert alert-error" th:href="${error}"></div>
+    <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+    <div th:if="${error}" class="alert alert-error" th:text="${error}"></div>
     <form th:action="@{/register}" th:object="${user}" method="post">
         <div class="form-group">
             <label for="username">User:</label>

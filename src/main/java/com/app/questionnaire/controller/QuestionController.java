@@ -81,9 +81,14 @@ public class QuestionController {
 
     // Get to retrieve the add quizzes page.
     @GetMapping("/quizlist")
-    public String showAddQuestionnaires(Model model) {
+    public String showQuizList(Model model) {
+        model.addAttribute("question", questionsService.loadQuizzes());
+        return "quizlist";
+    }
+    @GetMapping("/quizlist/add")
+    public String showAddQuestionnaire(Model model) {
         model.addAttribute("question", new Question());
-        return "questionnaires";
+        return "add-questionnaire";
     }
 
     // Get to retrieve the quiz editing page.

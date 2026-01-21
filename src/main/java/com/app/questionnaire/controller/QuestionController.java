@@ -92,10 +92,10 @@ public class QuestionController {
     }
 
     // Get to retrieve the quiz editing page.
-    @PostMapping("/quizlist")
+    @PostMapping("/quizlist/add")
     public String addQuestion(@Valid @ModelAttribute Question question, BindingResult result, Model model) {
         if (result.hasErrors()) {
-            return "questionnaires";
+            return "add-questionnaire";
         }
         try {
             questionsService.addQuiz(question);
@@ -103,7 +103,7 @@ public class QuestionController {
         } catch (Exception error) {
             model.addAttribute("error", "Error saving the question.");
             model.addAttribute("question", question);
-            return "questionnaires";
+            return "add-questionnaire";
         }
     }
 

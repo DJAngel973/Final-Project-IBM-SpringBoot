@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Questionnaires</title>
+</head>
+<body>
+<div class="container">
+    <h1>List of questionnaires.</h1>
+    <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+    <div th:if="${error}" class="alert alert-error" th:text="${error}"></div>
+    <div class="button-group">
+        <a th:href="@{/quizlist/add}" class="btn btn-primary">Add Questionnaire</a>
+        <form th:action="@{/logout}" method="post" style="display: inline;">
+            <button type="submit" class="btn btn-logout">Log out</button>
+        </form>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Question</th>
+                <th>Option A</th>
+                <th>Option B</th>
+                <th>Option C</th>
+                <th>Correct answer</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="question : ${questions}">
+                <td th:text="${question.id}"></td>
+                <td th:text="${question.questionText}"></td>
+                <td th:text="${question.optionA}"></td>
+                <td th:text="${question.optionB}"></td>
+                <td th:text="${question.optionC}"></td>
+                <td th:text="${question.correctAnswer}"></td>
+                <td>
+                    <a th:href="@{/quizlist/edit/{id}(id=${question.id})}" class="btn btn-edit">Edit</a>
+                    <form th:action="@{/quizlist/delete/{id}(id=${question.id})}" method="post" style="display: inline;">
+                        <button type="submit" class="btn btn-delete" onclick="return confirm('Are you sure you want to delete this questionnaire?')">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div th:if="${#lists.isEmpty(questions)}" class="alert alert-info">
+        There are no register questionnaires. Click on "Add Questionnaire" to create a new one.
+    </div>
+</div>
+</body>
+</html>

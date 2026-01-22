@@ -9,6 +9,11 @@ import com.app.questionnaire.model.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import java.security.Principal;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/")
@@ -151,8 +156,22 @@ public class QuestionController {
 
     // Get to retrieve quiz questions, go to the home page, admin and user.
     @GetMapping("/quiz")
-    public String showHome(Model model) {
-        model.addAttribute("questions", questionsService.loadQuizzes());
+    public String showHome(Model model, Principal principal) {
+        List<Question> questions = questionsService.loadQuizzes();
+        List<Question> shuffledQuestions = questions.stream()
+                .map(q -> {
+                    Question shuffled = new Question();
+                    shuffled.setId(q.getId());
+                    shuffled.setQuestionText(q.getQuestionText());
+                    shuffled.setCorrectAnswer(q.getCorrectAnswer());
+                    List<String> shuffledOptions = new ArrayList<>(q.getOptions());
+                    Collections.shuffle(shuffledOptions);
+                    shuffled.setOptions(shuffledOptions);
+                    return shuffled;
+                })
+                .collect(Collectors.toList());
+        model.addAttribute("questions", shuffledQuestions);
+        model.addAttribute("username", principal.getName());
         return "home";
     }
 

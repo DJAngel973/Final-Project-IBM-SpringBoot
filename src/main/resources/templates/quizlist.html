@@ -21,9 +21,9 @@
             <tr>
                 <th>ID</th>
                 <th>Question</th>
-                <th>Option A</th>
-                <th>Option B</th>
-                <th>Option C</th>
+                <th>Option 1</th>
+                <th>Option 2</th>
+                <th>Option 3</th>
                 <th>Correct answer</th>
                 <th>Actions</th>
             </tr>
@@ -32,9 +32,9 @@
             <tr th:each="question : ${questions}">
                 <td th:text="${question.id}"></td>
                 <td th:text="${question.questionText}"></td>
-                <td th:text="${question.optionA}"></td>
-                <td th:text="${question.optionB}"></td>
-                <td th:text="${question.optionC}"></td>
+                <td th:text="${question.option[0]}"></td>
+                <td th:text="${question.option[1]}"></td>
+                <td th:text="${question.option[2]}"></td>
                 <td th:text="${question.correctAnswer}"></td>
                 <td>
                     <a th:href="@{/quizlist/edit/{id}(id=${question.id})}" class="btn btn-edit">Edit</a>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz</title>
+</head>
+<body>
+<div class="container">
+    <h1>Answer the Quiz</h1>
+    <div th:if="${param.error}" class="alert alert-error">
+        Error processing answers.
+    </div>
+    <form th:action="@{/quiz/answer/{username}(username=${username})}" method="post">
+        <div th:each="question, questionSat : ${questions}" class="question-block">
+            <h3 th:text="${questionStat.count + '.' + question.questionText}"></h3>
+            <div th:each="option, optionStat : ${question.options}" class="option">
+                <input type="radio"
+                       th:name="'answer_' + ${question.id}"
+                       th:value="${optionStat.index + 1}"
+                       th:id="'q' + ${question.id} + '_opt' + ${optionStat.index}"
+                       required>
+                <label th:for="'q' + ${question.id} + '_opt' + ${optionStat.index}">
+                    <span th:text="${optionStat.index + 1}">1</span>
+                    <span th:text="${option}"></span>
+                </label>
+            </div>
+        </div>
+        <div class="button-group">
+            <button type="submit" class="btn btn-primary">Submit Answers</button>
+            <form th:action="@{/logout}" method="post" style="display: inline;">
+                <button type="submit" class="btn btn-logout">Log out</button>
+            </form>
+        </div>
+    </form>
+</div>
+</body>
+</html>

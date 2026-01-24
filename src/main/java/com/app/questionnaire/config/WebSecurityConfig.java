@@ -28,7 +28,12 @@ public class WebSecurityConfig {
                 )
                 .formLogin(form -> form
                         .loginPage("/login")
-                        .defaultSuccessUrl("/quiz", true)
+                        .successHandler((request, response, authentication) -> {
+                            boolean isAdmin = authentication.getAuthorities().stream()
+                                    .anyMatch(auth -> auth.getAuthority().equals("ROLE_ADMIN"));
+                            String redirectUrl = isAdmin ? "/quizlist" : "/quiz";
+                            response.sendRedirect(redirectUrl);
+                        })
                         .permitAll()
                 )
                 .logout(logout -> logout

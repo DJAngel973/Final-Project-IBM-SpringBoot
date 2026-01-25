@@ -1,6 +1,7 @@
 package com.app.questionnaire.model;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 import java.util.ArrayList;
@@ -12,7 +13,8 @@ public class Question {
     @NotBlank(message = "Question text is required.")
     private String questionText;
 
-    @Size(min = 3, max = 4, message = "There should be between 3 and 4 options.")
+    @NotNull(message = "Options are required")
+    @Size(min = 4, max = 4, message = "Must have exactly 4 options")
     private List<String> options;
 
     @NotBlank(message = "The correct answer is required.")

@@ -8,8 +8,10 @@
 <body>
 <div class="container">
     <h1>List of questionnaires.</h1>
-    <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
-    <div th:if="${error}" class="alert alert-error" th:text="${error}"></div>
+    <div th:if="${param.success}" class="alert alert-success">Questionnaire saved successfully.</div>
+    <div th:if="${param.updated}" class="alert alert-success">Questionnaire updated successfully.</div>
+    <div th:if="${param.deleted}" class="alert alert-success">Questionnaire deleted successfully.</div>
+    <div th:if="${param.error}" class="alert alert-error">Error processing the request.</div>
     <div class="button-group">
         <a th:href="@{/quizlist/add}" class="btn btn-primary">Add Questionnaire</a>
         <form th:action="@{/logout}" method="post" style="display: inline;">
@@ -32,9 +34,9 @@
             <tr th:each="question : ${questions}">
                 <td th:text="${question.id}"></td>
                 <td th:text="${question.questionText}"></td>
-                <td th:text="${question.option[0]}"></td>
-                <td th:text="${question.option[1]}"></td>
-                <td th:text="${question.option[2]}"></td>
+                <td th:text="${question.options[0]}"></td>
+                <td th:text="${question.options[1]}"></td>
+                <td th:text="${question.options[2]}"></td>
                 <td th:text="${question.correctAnswer}"></td>
                 <td>
                     <a th:href="@{/quizlist/edit/{id}(id=${question.id})}" class="btn btn-edit">Edit</a>

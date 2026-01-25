@@ -13,6 +13,7 @@ import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Controller
@@ -176,30 +177,42 @@ public class QuestionController {
     }
 
     // Post to send answers.
-    @PostMapping("/quiz/answer/{username}")
-    public String sendAnswer(@PathVariable String username,@PathVariable Integer id, @RequestParam Integer selectedOptionIndex, Model model) {
+    @PostMapping("/quiz/submit")
+    public String submitQuiz(@RequestParam Map<String, String> answers, Principal principal) {
+        String username = principal.getName();
         try {
-            boolean isCorrect = questionsService.validateAnswer(username, id, selectedOptionIndex);
-            model.addAttribute("isCorrect", isCorrect);
-            model.addAttribute("message", isCorrect ? "correct answer" : "isCorrect answer");
-            return "redirect:/home?result=" + isCorrect;
-        } catch (IllegalArgumentException error) {
-            model.addAttribute("error", error.getMessage());
-            return "redirect:/home?error";
+            for (Map.Entry<String, String> entry : answers.entrySet()) {
+                String key = entry.getKey();
+                if (key.startsWith("answer_")) {
+                    Integer questionId = Integer.parseInt(key.replace("answer_", ""));
+                    Integer selectedOptionIndex = Integer.parseInt(entry.getValue());
+                    questionsService.validateAnswer(username, questionId, selectedOptionIndex);
+                }
+            }
+            return "redirect:/quiz/results";
+        } catch (Exception error) {
+            return "redirect:/quiz?error";
         }
     }
 
     // Get to retrieve the results page.
-    @GetMapping("/quiz/answer/result/{username}")
-    public String resultAnswer(@PathVariable String username, Model model) {
+    @GetMapping("/quiz/results")
+    public String showResults(Model model, Principal principal) {
+        String username = principal.getName();
         try {
-            var results = questionsService.getUserResults(username);
-            model.addAttribute("results",results);
+            Map<Question, Boolean> results = questionsService.getUserResults(username);
+            long correctAnswers = results.values().stream().filter(Boolean::booleanValue).count();
+            int totalQuestions = results.size();
+            double score = (correctAnswers * 100.0) / totalQuestions;
+            model.addAttribute("results", results);
             model.addAttribute("username", username);
-            return "results";
+            model.addAttribute("correctAnswers", correctAnswers);
+            model.addAttribute("totalQuestions",totalQuestions);
+            model.addAttribute("score", String.format("%.2f", score));
+            return "result";
         } catch (IllegalArgumentException error) {
             model.addAttribute("error", error.getMessage());
-            return "redirect:home?error";
+            return "redirect:/quiz?error";
         }
     }
 }

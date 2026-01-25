@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Questionnaire</title>
+</head>
+<body>
+<div class="container">
+    <h1>Edit Questionnaire</h1>
+    <!-- Error message if something goes wrong -->
+    <div th:if="${error}" class="alert alert-error" th:text="${error}"></div>
+    <!-- Form to edit an existing question -->
+    <form th:action="@{/quizlist/edit/{id}(id=${question.id})}" th:object="${question}" method="post">
+        <!-- Hidden field to store the question ID -->
+        <input type="hidden" th:field="*{id}">
+        <!-- Field for question text -->
+        <div class="form-group">
+            <label for="questionText">Question</label>
+            <input type="text" id="questionText" th:field="*{questionText}" required>
+            <span th:if="${#fields.hasErrors('questionText')}" th:errors="*{questionText}" class="error"></span>
+        </div>
+        <!-- Field for option 1 -->
+        <div class="form-group">
+            <label for="option1">Option 1:</label>
+            <input type="text" id="option1" th:field="*{options[0]}" required>
+        </div>
+        <!-- Field for option 2 -->
+        <div class="form-group">
+            <label for="option2">Option 2:</label>
+            <input type="text" id="option2" th:field="*{options[1]}" required>
+        </div>
+        <!-- Field for option 3 -->
+        <div class="form-group">
+            <label for="option3">Option 3:</label>
+            <input type="text" id="option3" th:field="*{options[2]}" required>
+        </div>
+        <!-- Selector to indicate which is the correct answer -->
+        <div class="form-group">
+            <label for="correctAnswer">Correct Answer:</label>
+            <select id="correctAnswer" th:field="*{correctAnswer}" required>
+                <option value="">Select...</option>
+                <option value="1">Option 1</option>
+                <option value="2">Option 2</option>
+                <option value="3">Option 3</option>
+            </select>
+            <span th:if="${#fields.hasErrors('correctAnswer')}" th:errors="*{correctAnswer}" class="error"></span>
+        </div>
+        <!-- Action buttons -->
+        <div class="button-group">
+            <button type="submit" class="btn btn-primary">Update</button>
+            <a th:href="@{/quizlist}" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+</body>
+</html>

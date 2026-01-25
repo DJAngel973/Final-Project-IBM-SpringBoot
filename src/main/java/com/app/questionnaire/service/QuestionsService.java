@@ -23,8 +23,10 @@ public class QuestionsService {
         if (question == null) {
             throw new IllegalArgumentException("The question cannot be null.");
         }
-        if (!question.getOptions().contains(question.getCorrectAnswer())) {
-            throw new IllegalArgumentException("The correct answer must be one of the options.");
+        if (question.getCorrectAnswer() == null ||
+                question.getCorrectAnswer() < 1 ||
+                question.getCorrectAnswer() > question.getOptions().size()) {
+            throw new IllegalArgumentException("The correct answer must be between 1 and " + question.getOptions().size());
         }
         if (question.getOptions().size() != question.getOptions().stream().distinct().count()) {
             throw new IllegalArgumentException("Options cannot have duplicates.");
@@ -61,8 +63,10 @@ public class QuestionsService {
         if (!questions.containsKey(id)) {
             throw new IllegalArgumentException(String.format("Question with ID %d does not exist.",id));
         }
-        if (!updatedQuestion.getOptions().contains(updatedQuestion.getCorrectAnswer())) {
-            throw new IllegalArgumentException("The correct answer must be one of the options.");
+        if (updatedQuestion.getCorrectAnswer() == null ||
+                updatedQuestion.getCorrectAnswer() < 1 ||
+                updatedQuestion.getCorrectAnswer() > updatedQuestion.getOptions().size()) {
+            throw new IllegalArgumentException("The correct answer must be between 1 and " + updatedQuestion.getOptions().size());
         }
         if (updatedQuestion.getOptions().size() != updatedQuestion.getOptions().stream().distinct().count()) {
             throw new IllegalArgumentException("Options cannot have duplicates.");
@@ -80,8 +84,8 @@ public class QuestionsService {
         if (selectedOptionIndex == null || selectedOptionIndex < 1 || selectedOptionIndex > question.getOptions().size()) {
             throw new IllegalArgumentException("Invalid option selected");
         }
+        boolean isCorrect = selectedOptionIndex.equals(question.getCorrectAnswer());
         String selectedAnswer = question.getOptions().get(selectedOptionIndex -1);
-        boolean isCorrect = question.getCorrectAnswer().equalsIgnoreCase(selectedAnswer.trim());
         userAnswersMap.computeIfAbsent(username, k -> new HashMap<>())
                 .put(questionId, selectedAnswer);
         return isCorrect;
@@ -96,7 +100,8 @@ public class QuestionsService {
         for (Map.Entry<Integer, String> entry : userAnswers.entrySet()) {
             Question question = findQuestionById(entry.getKey());
             String userAnswer = entry.getValue();
-            boolean isCorrect = question.getCorrectAnswer().equalsIgnoreCase(userAnswer.trim());
+            int userAnswerIndex = question.getOptions().indexOf(userAnswer) + 1;
+            boolean isCorrect = (userAnswerIndex == question.getCorrectAnswer());
             results.put(question, isCorrect);
         }
         return results;

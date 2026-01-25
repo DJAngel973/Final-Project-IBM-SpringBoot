@@ -35,6 +35,11 @@
             <label for="option3">Option 3:</label>
             <input type="text" id="option3" th:field="*{options[2]}" required>
         </div>
+        <!-- Field for option 4 -->
+        <div class="form-group">
+            <label for="option4">Option 4:</label>
+            <input type="text" id="option4" th:field="*{options[3]}" required>
+        </div>
         <!-- Selector to indicate which is the correct answer -->
         <div class="form-group">
             <label for="correctAnswer">Correct Answer:</label>
@@ -43,6 +48,7 @@
                 <option value="1">Option 1</option>
                 <option value="2">Option 2</option>
                 <option value="3">Option 3</option>
+                <option value="4">Option 4</option>
             </select>
             <span th:if="${#fields.hasErrors('correctAnswer')}" th:errors="*{correctAnswer}" class="error"></span>
         </div>

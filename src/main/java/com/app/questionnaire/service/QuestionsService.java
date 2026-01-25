@@ -37,14 +37,6 @@ public class QuestionsService {
         return question;
     }
 
-    public Question editQuiz(Question question) {
-        if (!questions.containsKey(question.getId())) {
-            throw new IllegalArgumentException(String.format("Question with ID %d does not exist.", question.getId()));
-        }
-        questions.put(question.getId(), question);
-        return question;
-    }
-
     public Question deleteQuiz(Integer id) {
         if (!questions.containsKey(id)) {
             throw new IllegalArgumentException(String.format("Question with ID %d does not exist.", id));

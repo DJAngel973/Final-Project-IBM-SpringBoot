@@ -208,7 +208,8 @@ public class QuestionController {
             model.addAttribute("username", username);
             model.addAttribute("correctAnswers", correctAnswers);
             model.addAttribute("totalQuestions",totalQuestions);
-            model.addAttribute("score", String.format("%.2f", score));
+            model.addAttribute("score", score);
+            model.addAttribute("scoreFormatted", String.format("%.2f", score));
             return "result";
         } catch (IllegalArgumentException error) {
             model.addAttribute("error", error.getMessage());

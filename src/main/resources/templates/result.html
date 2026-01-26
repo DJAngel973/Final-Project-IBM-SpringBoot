@@ -24,10 +24,10 @@
         </div>
         <div class="button-group">
             <a th:href="@{/quiz}" class="btn btn-primary">Retry Quiz</a>
-            <form th:action="@{/logout}" method="post" style="display: inline;">
-                <button type="submit" class="btn btn-logout">Log out</button>
-            </form>
         </div>
+        <form th:action="@{/logout}" method="post" style="display: inline;">
+            <button type="submit" class="btn btn-logout">Log out</button>
+        </form>
     </div>
 </body>
 </html>

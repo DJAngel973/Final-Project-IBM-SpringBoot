@@ -75,7 +75,7 @@ public class QuestionController {
                     user.getEmail(),
                     user.getRole()
             );
-            String roleName = user.getRole().equals("ADMIN") ? "Administrator" : "User";
+            String roleName = user.getRole().name().equalsIgnoreCase("ADMIN") ? "Administrator" : "User";
             model.addAttribute("success", String.format("Ok! User %s has been registered with role %s.", user.getUsername(), roleName));
             model.addAttribute("user", new User());
             return "register";

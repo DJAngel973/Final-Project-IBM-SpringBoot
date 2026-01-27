@@ -185,8 +185,8 @@ public class QuestionController {
                 String key = entry.getKey();
                 if (key.startsWith("answer_")) {
                     Integer questionId = Integer.parseInt(key.replace("answer_", ""));
-                    Integer selectedOptionIndex = Integer.parseInt(entry.getValue());
-                    questionsService.validateAnswer(username, questionId, selectedOptionIndex);
+                    String selectedAnswer = entry.getValue();
+                    questionsService.validateAnswer(username, questionId, selectedAnswer);
                 }
             }
             return "redirect:/quiz/results";

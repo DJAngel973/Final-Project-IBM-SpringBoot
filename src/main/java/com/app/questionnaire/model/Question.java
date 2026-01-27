@@ -14,12 +14,10 @@ public class Question {
     @Size(min = 4, max = 4, message = "Must have exactly 4 options")
     private List<String> options;
 
-    @NotNull(message = "The correct answer is required.")
-    @Min(value = 1, message = "Correct answer must be between 1 and 4")
-    @Max(value = 4, message = "Correct answer must be between 1 and 4")
-    private Integer correctAnswer;
+    @NotBlank(message = "The correct answer is required.")
+    private String correctAnswer;
 
-    public Question(Integer id, String questionText, List<String> options, Integer correctAnswer) {
+    public Question(Integer id, String questionText, List<String> options, String correctAnswer) {
         this.id = id;
         this.questionText = questionText;
         this.options = new ArrayList<>(options);
@@ -51,10 +49,10 @@ public class Question {
         this.options = new ArrayList<>(options);
     }
 
-    public Integer getCorrectAnswer() {
+    public String getCorrectAnswer() {
         return correctAnswer;
     }
-    public void setCorrectAnswer(Integer correctAnswer) {
+    public void setCorrectAnswer(String correctAnswer) {
         this.correctAnswer = correctAnswer;
     }
 

@@ -18,7 +18,7 @@
             <div th:each="option, optionStat : ${question.options}" class="option">
                 <input type="radio"
                        th:name="'answer_' + ${question.id}"
-                       th:value="${optionStat.index + 1}"
+                       th:value="${option}"
                        th:id="'q' + ${question.id} + '_opt' + ${optionStat.index}"
                        required>
                 <label th:for="'q' + ${question.id} + '_opt' + ${optionStat.index}">

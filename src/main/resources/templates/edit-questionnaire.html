@@ -45,10 +45,10 @@
             <label for="correctAnswer">Correct Answer:</label>
             <select id="correctAnswer" th:field="*{correctAnswer}" required>
                 <option value="">Select...</option>
-                <option value="1">Option 1</option>
-                <option value="2">Option 2</option>
-                <option value="3">Option 3</option>
-                <option value="4">Option 4</option>
+                <option th:value="${question.options[0]}" th:text="'Option 1: ' + ${question.options[0]}">Option 1</option>
+                <option th:value="${question.options[1]}" th:text="'Option 2: ' + ${question.options[1]}">Option 2</option>
+                <option th:value="${question.options[2]}" th:text="'Option 3: ' + ${question.options[2]}">Option 3</option>
+                <option th:value="${question.options[3]}" th:text="'Option 4: ' + ${question.options[3]}">Option 4</option>
             </select>
             <span th:if="${#fields.hasErrors('correctAnswer')}" th:errors="*{correctAnswer}" class="error"></span>
         </div>

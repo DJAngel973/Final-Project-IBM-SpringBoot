@@ -208,7 +208,13 @@ public class QuestionController {
         }
     }
 
-    // Get to retrieve quiz questions, go to the home page, admin and user.
+    /**
+     * Displays the quiz page with shuffled questions.
+     * <p>Loads all questions, shuffles their options randomly, and displays them to the authenticated user.</p>
+     * @param model model to pass to attributes to the view
+     * @param principal authenticated user information
+     * @return name of the "home" view
+     * */
     @GetMapping("/quiz")
     public String showHome(Model model, Principal principal) {
         List<Question> questions = questionsService.loadQuizzes();

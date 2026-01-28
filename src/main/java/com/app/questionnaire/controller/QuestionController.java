@@ -99,7 +99,12 @@ public class QuestionController {
         }
     }
 
-    // Get to retrieve the add quizzes page.
+    /**
+     * Displays the list of all quiz questions.
+     * <p>Loads all available quizzes from the service and passes them to the view.</p>
+     * @param model model to pass attributes to the vivew
+     * @return name of the "quizlist" view
+     * */
     @GetMapping("/quizlist")
     public String showQuizList(Model model) {
         model.addAttribute("questions", questionsService.loadQuizzes());

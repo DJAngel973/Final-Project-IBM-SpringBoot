@@ -165,7 +165,15 @@ public class QuestionController {
         }
     }
 
-    // Put to edit quiz questions - to implement HTML with Thymeleaf only apply GET and POST.
+    /**
+     * Processes the update of an existing quiz question.
+     * <p>Validates the updated data and saves changes to the database. Uses POST method for HTML/Thymeleaf compatibility instead of PUT.</p>
+     * @param id ID of the question to update
+     * @param question Question object containing the updated form data
+     * @param result result of the Bean Validation check
+     * @param model model to pass attribute to the view
+     * @return redirect to "/quizlist?updated" on success, or "edit-questionnaire" view on error
+     * */
     @PostMapping("/quizlist/edit/{id}")
     public String editQuestions(@PathVariable Integer id, @Valid @ModelAttribute Question question, BindingResult result, Model model) {
         if (result.hasErrors()) {

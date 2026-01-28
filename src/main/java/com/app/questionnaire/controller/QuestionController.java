@@ -190,7 +190,13 @@ public class QuestionController {
         }
     }
 
-    // Delete to remove quiz questions - POST is compatible with HTML and Thymeleaf.
+    /**
+     * Processes the deletion of a quiz question.
+     * <p>Removes the question from the database by ID. Uses POST method for HTML/Thymeleaf compatibility instead of DELETE.</p>
+     * @param id ID of the question to delete
+     * @param model model to pass attributes to the view
+     * @return redirect to "/quizlist?deleted" on success, or "/quizlist?error" on failure
+     * */
     @PostMapping("/quizlist/delete/{id}")
     public String deleteQuestion(@PathVariable Integer id, Model model) {
         try {

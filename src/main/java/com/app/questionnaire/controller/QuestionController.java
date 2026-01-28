@@ -38,7 +38,11 @@ public class QuestionController {
         return "home-landing";
     }
 
-    // Get to retrieve the login page.
+    /**
+     * Displays the login page.
+     * <p>Retrieves the authentication form where users can enter their credentials.</p>
+     * @return name of the "login" view
+     * */
     @GetMapping("/login")
     public String showLogin() {
         return "login";

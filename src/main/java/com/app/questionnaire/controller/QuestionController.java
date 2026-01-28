@@ -123,7 +123,14 @@ public class QuestionController {
         return "add-questionnaire";
     }
 
-    // Get to retrieve the quiz editing page.
+    /**
+     * processes the addition of a new quiz question.
+     * <p>Validates the question data and saves it to the database. Redirects to the quiz list on success ot returns to the form with errors.</p>
+     * @param question Question object containing the form data
+     * @param result result of the Bean Validation check
+     * @param model model to pass attributes to the view
+     * @return redirect to "/quizlist?success" on success, or "add-questionnaire" view on error
+     * */
     @PostMapping("/quizlist/add")
     public String addQuestion(@Valid @ModelAttribute Question question, BindingResult result, Model model) {
         if (result.hasErrors()) {

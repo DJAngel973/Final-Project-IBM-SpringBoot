@@ -110,6 +110,13 @@ public class QuestionController {
         model.addAttribute("questions", questionsService.loadQuizzes());
         return "quizlist";
     }
+
+    /**
+     * Displays the form to add a new quiz question.
+     * <p>Initializes an empty Question object for form binding.</p>
+     * @param model model to pass attributes to the view
+     * @return name of the "add-questionnaire" view
+     * */
     @GetMapping("/quizlist/add")
     public String showAddQuestionnaire(Model model) {
         model.addAttribute("question", new Question());

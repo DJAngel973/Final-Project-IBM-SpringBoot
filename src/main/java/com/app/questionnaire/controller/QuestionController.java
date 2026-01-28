@@ -48,7 +48,12 @@ public class QuestionController {
         return "login";
     }
 
-    // Get to retrieve the registration page.
+    /**
+     * Displays the registration page.
+     * <p>Initializes an empty User object and adds it to the model for form binding.</p>
+     * @param model model to pass attributes to the view
+     * @return name of the "register" view
+     * */
     @GetMapping("/register")
     public String showRegister(Model model) {
         model.addAttribute("user", new User());

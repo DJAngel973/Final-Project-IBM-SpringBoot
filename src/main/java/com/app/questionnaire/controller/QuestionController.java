@@ -146,7 +146,13 @@ public class QuestionController {
         }
     }
 
-    // Get to retrieve the quiz editing page.
+    /**
+     * Displays the form to edit an existing quiz question.
+     * <p>Retrieves the question by ID and loads it into form for editing.</p>
+     * @param id ID of the question to edit
+     * @param model model to pass attributes to the view
+     * @return name of the "edit-questionnaire" view, or redirect to "/quizlist" if question not found
+     * */
     @GetMapping("/quizlist/edit/{id}")
     public String showEditQuestionnaires(@PathVariable Integer id, Model model) {
         try {

@@ -28,6 +28,11 @@ public class QuestionController {
         this.questionsService = questionsService;
     }
 
+    /**
+     * Displays the landing page of the application.
+     * <p>This is the main entry point for users visiting the application.</p>
+     * @return name of the "home-landing" view
+     * */
     @GetMapping("")
     public String showLandingPage() {
         return "home-landing";

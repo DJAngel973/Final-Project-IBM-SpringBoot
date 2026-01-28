@@ -260,7 +260,13 @@ public class QuestionController {
         }
     }
 
-    // Get to retrieve the results page.
+    /**
+     * Displays the quiz results page.
+     * <p>Shows the user's answers, calculates the score, and displays statistics including correct answers and percentage.</p>
+     * @param model model to pass attributes to the view
+     * @param principal authenticated usr information
+     * @return name of the "result" view, or redirect to "/quiz?error" if results cannot be loaded
+     * */
     @GetMapping("/quiz/results")
     public String showResults(Model model, Principal principal) {
         String username = principal.getName();

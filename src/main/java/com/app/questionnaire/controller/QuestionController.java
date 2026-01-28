@@ -235,7 +235,13 @@ public class QuestionController {
         return "home";
     }
 
-    // Post to send answers.
+    /**
+     * Processes the submission of quiz answers.
+     * <p>Validates each answer submitted by the user and stores the results in the system.</p>
+     * @param answers map containing question IDs and selected answers
+     * @param principal authenticated user information
+     * @return redirect to "/quiz/results" on success, or "/quiz?error" on failure
+     * */
     @PostMapping("/quiz/submit")
     public String submitQuiz(@RequestParam Map<String, String> answers, Principal principal) {
         String username = principal.getName();

@@ -26,6 +26,13 @@ public class QuestionsService {
         return questions.values().stream().toList();
     }
 
+    /**
+     * Adds a new question to the quiz system.
+     * Validates that the question has a correct answer, the answer exists in options, and all options are unique.
+     * @param question the question to be added
+     * @return the added question with assigned ID
+     * @throws IllegalArgumentException if question is null, correct answer is empty, correct answer is not in options, or options contain duplicates
+     * */
     public Question addQuiz(Question question) {
         if (question == null) {
             throw new IllegalArgumentException("The question cannot be null.");

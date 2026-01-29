@@ -6,6 +6,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
 
+/**
+ * Service class that manages quiz questions and user answers.
+ * Provides operations for CRUD actions in questions and tracking user responses.
+ * */
 @Service
 public class QuestionsService {
 
@@ -14,6 +18,10 @@ public class QuestionsService {
     private Map<String, Map<Integer, String>> userAnswersMap = new HashMap<>();
     private Map<String, Map<Question, Boolean>> userResultsMap = new HashMap<>();
 
+    /**
+     * Retrieves all available quiz questions.
+     * @return a list of all questions in the system
+     * */
     public List<Question> loadQuizzes() {
         return questions.values().stream().toList();
     }

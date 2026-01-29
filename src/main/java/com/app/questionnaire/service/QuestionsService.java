@@ -65,6 +65,12 @@ public class QuestionsService {
         return questions.remove(id);
     }
 
+    /**
+     * Finds and returns a question by its ID.
+     * @param id the ID of the question to find
+     * @return the question with the specified ID
+     * @throws IllegalArgumentException if no question exists with the given ID
+     * */
     public Question findQuestionById(Integer id) {
         if (!questions.containsKey(id)) {
             throw new IllegalArgumentException((String.format("Question with ID %d does not exist.",id)));

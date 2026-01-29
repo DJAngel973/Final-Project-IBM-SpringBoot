@@ -123,6 +123,12 @@ public class QuestionsService {
         return isCorrect;
      }
 
+     /**
+      * Retrieves all quiz results for a specific user.
+      * @param username the username whose results to retrieve
+      * @return a map of questions to their correctness (true/false)
+      * @throws IllegalArgumentException if no results exist for the user
+      * */
      public Map<Question, Boolean> getUserResults(String username) {
         if (!userResultsMap.containsKey(username)) {
             throw new IllegalArgumentException("No results found for user: " + username);

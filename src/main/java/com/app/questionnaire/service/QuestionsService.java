@@ -104,6 +104,15 @@ public class QuestionsService {
         return updatedQuestion;
     }
 
+    /**
+     * Validates a user's answer to a specific question.
+     * Stores the answer and result for the user.
+     * @param username the username of the person answering
+     * @param questionId the ID of the question being answered
+     * @param selectedAnswer the answer selected by the user
+     * @return true if the answer is correct, false otherwise
+     * @throws IllegalArgumentException if the question doesn't exist
+     * */
      public boolean validateAnswer(String username, Integer questionId, String selectedAnswer) {
         Question question = findQuestionById(questionId);
         boolean isCorrect = question.getCorrectAnswer().equals(selectedAnswer);

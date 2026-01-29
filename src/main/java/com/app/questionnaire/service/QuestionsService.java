@@ -52,6 +52,12 @@ public class QuestionsService {
         return question;
     }
 
+    /**
+     * Deletes a question from the system by ist ID.
+     * @param id the ID of the question to delete
+     * @return the deleted question
+     * @throws IllegalArgumentException if no question exists with the given ID
+     * */
     public Question deleteQuiz(Integer id) {
         if (!questions.containsKey(id)) {
             throw new IllegalArgumentException(String.format("Question with ID %d does not exist.", id));

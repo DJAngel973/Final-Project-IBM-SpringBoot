@@ -78,6 +78,14 @@ public class QuestionsService {
         return questions.get(id);
     }
 
+    /**
+     * Updates an existing question with new information.
+     * Validates the updated question's correct answer and options.
+     * @param id the ID of the question to update
+     * @param updatedQuestion the new question data
+     * @return the updated question
+     * @throws IllegalArgumentException if question doesn't exist, correct answer is empty, correct answer is not in options, or options contain duplicates
+     * */
     public Question updateQuestion(Integer id, Question updatedQuestion) {
         if (!questions.containsKey(id)) {
             throw new IllegalArgumentException(String.format("Question with ID %d does not exist.",id));

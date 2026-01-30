@@ -29,6 +29,12 @@ public class QuizUserDetailsService implements UserDetailsService {
         this.passwordEncoder = passwordEncoder;
     }
 
+    /**
+     * Loads a user by username for authentication
+     * @param username username to search for
+     * @return UserDetails object with user information for Spring Security
+     * @throws UsernameNotFoundException if the user does not exist
+     * */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 

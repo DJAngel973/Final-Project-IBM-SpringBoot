@@ -9,8 +9,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 /**
- * Security configuration for the questionnaire application
- * Defines authentication, authorization rules, and password encoding.
+ * Security configuration class for the questionnaire application
+ * This class defines authentication, authorization rules, and password encoding,
+ * and security filter chain configuration.
+ * @Configuration marks this class as a source of bean definitions
+ * @EnableWebSecurity enables Spring Security's web security support
  * */
 @Configuration
 @EnableWebSecurity

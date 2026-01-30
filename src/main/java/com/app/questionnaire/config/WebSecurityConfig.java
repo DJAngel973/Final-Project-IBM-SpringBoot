@@ -31,6 +31,23 @@ public class WebSecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
+    /**
+     * Configures the security filter chain that defines how HTTP requests are secured.
+     * This method sets up authorization rules, login behavior, and logout configuration.
+     * Authorization rules:
+     * - Public access: "/", "/register", "/login" (no authentication required)
+     * - ADMIN only: "/quizlist/**" (requires ROLE_ADMIN authority)
+     * - USER only: "/quiz/**" (requires ROLE_USER authority)
+     * - All other requests require authentication
+     * Login configuration:
+     * - Custom login page at "/login"
+     * - Success handler redirects users based on role (admin -> /quizlist, user -> /quiz)
+     * Logout configuration:
+     * - Redirects to "/?logout" after successful logout
+     * @param http HttpSecurity object to configure web-based security
+     * @return SecurityFilterChain the configured security filter chain
+     * @throws Exception if an error occurs during configuration
+     * */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http

@@ -7,18 +7,24 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import static org.springframework.security.core.userdetails.User.builder;
 
+/**
+ * User management service for the questionnaire system.
+ * Implements Spring Security's UserDetailsService for authentication.
+ * */
 @Service
 public class QuizUserDetailsService implements UserDetailsService {
 
     private List<User> users = new ArrayList<>();
     private final PasswordEncoder passwordEncoder;
 
+    /**
+     * Constructor for the user service.
+     * @param passwordEncoder password encoder for secure storage
+     * */
     public QuizUserDetailsService(PasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
     }

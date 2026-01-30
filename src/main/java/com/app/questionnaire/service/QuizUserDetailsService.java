@@ -73,6 +73,12 @@ public class QuizUserDetailsService implements UserDetailsService {
         return newUser;
     }
 
+    /**
+     * Finds a user by username
+     * @param username username to search for
+     * @return User object of the found user
+     * @throws UsernameNotFoundException if the user is not found
+     * */
     public User findUserByUsername(String username) {
         return users.stream()
                 .filter(u -> u.getUsername().equals(username))

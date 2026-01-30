@@ -47,6 +47,15 @@ public class QuizUserDetailsService implements UserDetailsService {
                 .build();
     }
 
+    /**
+     * Registers a new user in the system.
+     * @param username unique username
+     * @param password unencoded password
+     * @param email user's email address
+     * @param role role assigned to the user
+     * @return User object of the registered user
+     * @throws IllegalArgumentException if the user already exists
+     * */
     public User registerUsers(String username, String password, String email, Role role) {
 
         boolean userExists = users.stream()

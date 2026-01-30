@@ -19,6 +19,13 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class WebSecurityConfig {
 
+    /**
+     * Creates and configures a password encoder bean for secure password storage.
+     * Uses BCrypt hashing algorithm which is a strong, adaptive hashing function
+     * designed specifically for password hashing.
+     * @return BCryptPasswordEncoder instance that will be used throughout the application to
+     * hash passwords before storing them in the database
+     * */
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();

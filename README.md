@@ -96,21 +96,61 @@ src/
 │   │   │   ├── QuestionsService.java
 │   │   │   └── QuizUserDetailsService.java
 │   │   └── QuestionnaireApplication.java
-│   ├── resources
-│   │   ├── static.css
-│   │   │   └── home-landing.css
-│   │   ├── templates
-│   │   │   ├── add-questionnaire.html
-│   │   │   ├── edit-questionnaire.html
-│   │   │   ├── home.html
-│   │   │   ├── home-landing.html
-│   │   │   ├── login.html
-│   │   │   ├── quizlist.html
-│   │   │   ├── register.html
-│   │   │   └── result.html
-│   │   └── application.properties
+│   └── resources
+│       ├── static.css
+│       │   └── home-landing.css
+│       ├── templates
+│       │   ├── add-questionnaire.html
+│       │   ├── edit-questionnaire.html
+│       │   ├── home.html
+│       │   ├── home-landing.html
+│       │   ├── login.html
+│       │   ├── quizlist.html
+│       │   ├── register.html
+│       │   └── result.html
+│       └── application.properties
 └── test/
     └── java/com.app.questionnaire
         └── QuestionnaireApplicationTests
-
 ```
+
+## Thymeleaf in this project
+
+### What is Thymeleaf?
+
+Thymeleaf is a server-side template engine that allows generating dynamic HTML from the backend.
+Hom does it work in this project?
+```plaintext
+Controller -> Model (data) -> Thymeleaf Template -> HTML to browser 
+```
+## Key Components:
+
+1. QuestionController
+```java
+@GetMapping("/quizlist")
+public String showQuestions(Model model) {
+    model.addAttribute("questions", questionService.getAllQuestions());
+    return "quizlist"; //templates/quizlist.html
+}
+```
+#### What it does:
+- Receives HTTP requests
+- Adds data to the Model
+- Returns the templaten name
+- Thymeleaf processes the template with the data
+
+2. Thymeleaf Templates (src/main/resources/templates/)
+
+quizlist.html
+```html
+<div th:each="question : ${questions}">
+    <p th:text="${question.text}"></p>
+</div>
+```
+#### Thymeleaf attributes:
+- th:each: Iterate over collections
+- th:text: Display text
+- th:action: Define form actions
+- th:object: Bind objects to forms
+- th:field: Bind form fields
+

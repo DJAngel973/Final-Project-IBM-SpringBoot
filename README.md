@@ -136,7 +136,7 @@ public String showQuestions(Model model) {
 #### What it does:
 - Receives HTTP requests
 - Adds data to the Model
-- Returns the templaten name
+- Returns the template name
 - Thymeleaf processes the template with the data
 
 2. Thymeleaf Templates (src/main/resources/templates/)
@@ -154,3 +154,39 @@ quizlist.html
 - th:object: Bind objects to forms
 - th:field: Bind form fields
 
+## Key Classes Explained
+1. QuestionnaireApplication.java
+
+Main entry point of the Spring Boot application.
+
+2. WebSecurityConfig.java
+
+Contains security configuration and Bean definitions.
+
+### What is a @Bean? A Bean is an object managed by Spring's IoC (Inversion of Control) container.
+### Why use @Bean in Security?
+- To configure components that Spring Security needs
+- So Spring can inject them where necessary
+- To centralize security configuration
+
+Key Beans:
+
+```java
+@Bean
+public SecurityFilterChain filterChain(HttpSecurity http) {
+    // Defines which routes are public/protected
+}
+
+@Bean
+public PasswordEncoder passwordEncoder() {
+    // Defines how passwords are encrypted
+}
+```
+
+## Technologies Used
+-  Java 21+
+- Spring Boot 3.x
+- Spring Security 6.x
+- Thymeleaf
+- H2 Database (in-memory)
+- Maven

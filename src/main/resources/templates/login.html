@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/login.css}">
     <title>Login</title>
 </head>
 <body>
@@ -25,10 +26,10 @@
             </div>
             <button type="submit" class="btn btn-primary">Enter</button>
         </form>
-        <div class="footer">
-            <p>Don't you have an account?<a th:href="@{/register}"> Register here</a></p>
-            <a th:href="@{/}"><- Back to top</a>
-        </div>
+    </div>
+    <div class="footer">
+        <p>Don't you have an account?<a th:href="@{/register}"> Register here</a></p>
+        <a th:href="@{/}"><- Back to top</a>
     </div>
 </body>
 </html>

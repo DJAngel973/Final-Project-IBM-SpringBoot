@@ -15,6 +15,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/")
@@ -72,7 +73,7 @@ public class QuestionController {
      * @throws IllegalArgumentException if the user already exists (handled internally)
      * */
     @PostMapping("/register")
-    public String registerUser(@Valid @ModelAttribute User user, BindingResult result, @RequestParam String confirmPassword, Model model) {
+    public String registerUser(@Valid @ModelAttribute User user, BindingResult result, @RequestParam String confirmPassword, Model model, RedirectAttributes redirectAttributes) {
         // Validate Bean Validation errors.
         if (result.hasErrors()) {
             return "register";
@@ -90,9 +91,8 @@ public class QuestionController {
                     user.getRole()
             );
             String roleName = user.getRole().name().equalsIgnoreCase("ADMIN") ? "Administrator" : "User";
-            model.addAttribute("success", String.format("Ok! User %s has been registered with role %s.", user.getUsername(), roleName));
-            model.addAttribute("user", new User());
-            return "register";
+            redirectAttributes.addFlashAttribute("success", String.format("Ok! user %s has been registered with role %s.", user.getUsername(), roleName));
+            return "redirect:/register";
         } catch (IllegalArgumentException error) {
             model.addAttribute("error", "The user already exists");
             return "register";

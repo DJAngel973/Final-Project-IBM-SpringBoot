@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Questionnaire</title>
+    <link rel="stylesheet" th:href="@{/css/add-questionnaire.css}">
 </head>
 <body>
 <div class="container">
@@ -18,25 +19,28 @@
             <input type="text" id="questionText" th:field="*{questionText}" required>
             <span th:if="${#fields.hasErrors('questionText')}" th:errors="*{questionText}" class="error"></span>
         </div>
-        <!-- Field for option 1 -->
-        <div class="form-group">
-            <label for="option1">Option 1:</label>
-            <input type="text" id="option1" th:field="*{options[0]}" required>
-        </div>
-        <!-- Field for option 2 -->
-        <div class="form-group">
-            <label for="option2">Option 2:</label>
-            <input type="text" id="option2" th:field="*{options[1]}" required>
-        </div>
-        <!-- Field for option 3 -->
-        <div class="form-group">
-            <label for="option3">Option 3:</label>
-            <input type="text" id="option3" th:field="*{options[2]}" required>
-        </div>
-        <!-- Field for option 4 -->
-        <div class="form-group">
-            <label for="option4">Option 4:</label>
-            <input type="text" id="option4" th:field="*{options[3]}" required>
+        <p class="options-title">Answer Options</p>
+        <div class="options-grid">
+            <!-- Field for option 1 -->
+            <div class="form-group">
+                <label for="option1">Option 1:</label>
+                <input type="text" id="option1" th:field="*{options[0]}" required>
+            </div>
+            <!-- Field for option 2 -->
+            <div class="form-group">
+                <label for="option2">Option 2:</label>
+                <input type="text" id="option2" th:field="*{options[1]}" required>
+            </div>
+            <!-- Field for option 3 -->
+            <div class="form-group">
+                <label for="option3">Option 3:</label>
+                <input type="text" id="option3" th:field="*{options[2]}" required>
+            </div>
+            <!-- Field for option 4 -->
+            <div class="form-group">
+                <label for="option4">Option 4:</label>
+                <input type="text" id="option4" th:field="*{options[3]}" required>
+            </div>
         </div>
         <!-- Selector to indicate which is the correct answer -->
         <div class="form-group">

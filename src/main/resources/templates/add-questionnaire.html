@@ -45,15 +45,20 @@
         <!-- Selector to indicate which is the correct answer -->
         <div class="form-group">
             <label for="correctAnswer">Correct Answer:</label>
-            <select id="correctAnswer" th:field="*{correctAnswer}" required>
+            <select id="correctAnswer" th:field="*{correctAnswer}">
                 <option value="">Select...</option>
-                <option th:value="${question.options[0]}" th:text="'Option 1: ' + ${question.options[0]}">Option 1</option>
-                <option th:value="${question.options[1]}" th:text="'Option 2: ' + ${question.options[1]}">Option 2</option>
-                <option th:value="${question.options[2]}" th:text="'Option 3: ' + ${question.options[2]}">Option 3</option>
-                <option th:value="${question.options[3]}" th:text="'Option 4: ' + ${question.options[3]}">Option 4</option>
             </select>
             <span th:if="${#fields.hasErrors('correctAnswer')}" th:errors="*{correctAnswer}" class="error"></span>
         </div>
+
+        <div class="form-group" id="confirmGroup" style="display:none;">
+            <label for="confirmAnswer">Confirm Correct Answer:</label>
+            <select id="confirmAnswer">
+                <option value="">Select again to confirm...</option>
+            </select>
+            <span id="confirmError" class="error" style="display:none;">Answers do not match.</span>
+        </div>
+
         <!-- Action buttons -->
         <div class="button-group">
             <button type="submit" class="btn btn-primary">Save</button>
@@ -61,5 +66,60 @@
         </div>
     </form>
 </div>
+
+<script>
+    const inputs = ['option1','option2','option3','option4'].map(id => document.getElementById(id));
+    const mainSelect = document.getElementById('correctAnswer');
+    const confirmGroup = document.getElementById('confirmGroup');
+    const confirmSelect = document.getElementById('confirmAnswer');
+    const confirmError = document.getElementById('confirmError');
+
+    function rebuildSelect(select, keepValue) {
+        select.innerHTML = '<option value="">Select...</option>';
+        inputs.forEach((inp, i) => {
+            if (inp.value.trim()) {
+                const opt = document.createElement('option');
+                opt.value = inp.value.trim();
+                opt.textContent = `Option ${i+1}: ${inp.value.trim()}`;
+                if (opt.value === keepValue) opt.selected = true;
+                select.appendChild(opt);
+            }
+        });
+    }
+
+    inputs.forEach(inp => inp.addEventListener('input', () => {
+        rebuildSelect(mainSelect, mainSelect.value);
+        rebuildSelect(confirmSelect, confirmSelect.value);
+    }));
+
+    mainSelect.addEventListener('change', () => {
+        if (mainSelect.value) {
+            rebuildSelect(confirmSelect, '');
+            confirmGroup.style.display = 'block';
+        } else {
+            confirmGroup.style.display = 'none';
+        }
+        confirmError.style.display = 'none';
+    });
+
+    confirmSelect.addEventListener('change', () => {
+        confirmError.style.display =
+            confirmSelect.value && confirmSelect.value !== mainSelect.value ? 'block' : 'none';
+    });
+
+    document.querySelector('form').addEventListener('submit', e => {
+        if (!mainSelect.value) {
+            e.preventDefault();
+            return;
+        }
+        if (mainSelect.value !== confirmSelect.value) {
+            e.preventDefault();
+            confirmError.textContent = confirmSelect.value
+                ? 'Answers do not match.' : 'Please confirm the correct answer.';
+            confirmError.style.display = 'block';
+        }
+    });
+</script>
+
 </body>
 </html>

@@ -209,14 +209,14 @@ public class QuestionController {
     }
 
     /**
-     * Displays the quiz page with shuffled questions.
+     * Displays the answer page with shuffled questions.
      * <p>Loads all questions, shuffles their options randomly, and displays them to the authenticated user.</p>
      * @param model model to pass to attributes to the view
      * @param principal authenticated user information
-     * @return name of the "home" view
+     * @return name of the "answer" view
      * */
     @GetMapping("/quiz")
-    public String showHome(Model model, Principal principal) {
+    public String showAnswer(Model model, Principal principal) {
         List<Question> questions = questionsService.loadQuizzes();
         List<Question> shuffledQuestions = questions.stream()
                 .map(q -> {
@@ -232,7 +232,7 @@ public class QuestionController {
                 .collect(Collectors.toList());
         model.addAttribute("questions", shuffledQuestions);
         model.addAttribute("username", principal.getName());
-        return "home";
+        return "answer";
     }
 
     /**

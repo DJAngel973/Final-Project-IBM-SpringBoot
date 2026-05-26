@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Questionnaire</title>
+    <link rel="stylesheet" th:href="@{/css/edit-questionnaire.css}">
 </head>
 <body>
 <div class="container">
@@ -20,38 +21,46 @@
             <input type="text" id="questionText" th:field="*{questionText}" required>
             <span th:if="${#fields.hasErrors('questionText')}" th:errors="*{questionText}" class="error"></span>
         </div>
-        <!-- Field for option 1 -->
-        <div class="form-group">
-            <label for="option1">Option 1:</label>
-            <input type="text" id="option1" th:field="*{options[0]}" required>
-        </div>
-        <!-- Field for option 2 -->
-        <div class="form-group">
-            <label for="option2">Option 2:</label>
-            <input type="text" id="option2" th:field="*{options[1]}" required>
-        </div>
-        <!-- Field for option 3 -->
-        <div class="form-group">
-            <label for="option3">Option 3:</label>
-            <input type="text" id="option3" th:field="*{options[2]}" required>
-        </div>
-        <!-- Field for option 4 -->
-        <div class="form-group">
-            <label for="option4">Option 4:</label>
-            <input type="text" id="option4" th:field="*{options[3]}" required>
+        <p class="options-title">Answer Options</p>
+        <div class="options-grid">
+            <!-- Field for option 1 -->
+            <div class="form-group">
+                <label for="option1">Option 1:</label>
+                <input type="text" id="option1" th:field="*{options[0]}" required>
+            </div>
+            <!-- Field for option 2 -->
+            <div class="form-group">
+                <label for="option2">Option 2:</label>
+                <input type="text" id="option2" th:field="*{options[1]}" required>
+            </div>
+            <!-- Field for option 3 -->
+            <div class="form-group">
+                <label for="option3">Option 3:</label>
+                <input type="text" id="option3" th:field="*{options[2]}" required>
+            </div>
+            <!-- Field for option 4 -->
+            <div class="form-group">
+                <label for="option4">Option 4:</label>
+                <input type="text" id="option4" th:field="*{options[3]}" required>
+            </div>
         </div>
         <!-- Selector to indicate which is the correct answer -->
         <div class="form-group">
             <label for="correctAnswer">Correct Answer:</label>
-            <select id="correctAnswer" th:field="*{correctAnswer}" required>
+            <select id="correctAnswer" th:field="*{correctAnswer}">
                 <option value="">Select...</option>
-                <option th:value="${question.options[0]}" th:text="'Option 1: ' + ${question.options[0]}">Option 1</option>
-                <option th:value="${question.options[1]}" th:text="'Option 2: ' + ${question.options[1]}">Option 2</option>
-                <option th:value="${question.options[2]}" th:text="'Option 3: ' + ${question.options[2]}">Option 3</option>
-                <option th:value="${question.options[3]}" th:text="'Option 4: ' + ${question.options[3]}">Option 4</option>
             </select>
             <span th:if="${#fields.hasErrors('correctAnswer')}" th:errors="*{correctAnswer}" class="error"></span>
         </div>
+
+        <div class="form-group" id="confirmGroup" style="display:none;">
+            <label for="confirmAnswer">Confirm Correct Answer:</label>
+            <select id="confirmAnswer">
+                <option value="">Select again to confirm...</option>
+            </select>
+            <span id="confirmError" class="error" style="display:none;">Answers do not match.</span>
+        </div>
+
         <!-- Action buttons -->
         <div class="button-group">
             <button type="submit" class="btn btn-primary">Update</button>
@@ -59,5 +68,86 @@
         </div>
     </form>
 </div>
+
+<!--
+  Dynamically rebuilds the "Correct Answer" select from the current option inputs.
+  Also adds a confirmation select to prevent accidental wrong-answer selection.
+-->
+<script th:inline="javascript">
+
+    // References to DOM elements
+    const inputs = ['option1','option2','option3','option4'].map(id => document.getElementById(id));
+    const mainSelect = document.getElementById('correctAnswer');
+    const confirmGroup = document.getElementById('confirmGroup');
+    const confirmSelect = document.getElementById('confirmAnswer');
+    const confirmError = document.getElementById('confirmError');
+
+    // Rebuilds a select's <option> list from the current input values.
+    // keepValue: the option value that should remain selected after rebuilding.
+    function rebuildSelect(select, keepValue) {
+        select.innerHTML = '<option value="">Select...</option>';
+        inputs.forEach((inp, i) => {
+            if (inp.value.trim()) {
+                const opt = document.createElement('option');
+                opt.value = inp.value.trim();
+                opt.textContent = `Option ${i+1}: ${inp.value.trim()}`;
+                if (opt.value === keepValue) opt.selected = true;
+                select.appendChild(opt);
+            }
+        });
+    }
+
+    // On page load, pre-fill selects with existing question data.
+    // Thymeleaf injects the saved correctAnswer into the JS expression below.
+    document.addEventListener('DOMContentLoaded', () => {
+        /*<![CDATA[*/
+        const correctAnswer = /*[[${question.correctAnswer}]]*/ '';
+        /*]]>*/
+        rebuildSelect(mainSelect, correctAnswer);
+        if (correctAnswer) {
+            rebuildSelect(confirmSelect, '');
+            confirmGroup.style.display = 'block';
+        }
+    });
+
+    // Rebuild both selects whenever an option input changes.
+    inputs.forEach(inp => inp.addEventListener('input', () => {
+        rebuildSelect(mainSelect, mainSelect.value);
+        rebuildSelect(confirmSelect, confirmSelect.value);
+    }));
+
+    // Show the confirmation select when a correct answer is chosen.
+    mainSelect.addEventListener('change', () => {
+        if (mainSelect.value) {
+            rebuildSelect(confirmSelect, '');
+            confirmGroup.style.display = 'block';
+        } else {
+            confirmGroup.style.display = 'none';
+        }
+        confirmError.style.display = 'none';
+    });
+
+    // Show an error immediately if the confirmation doesn't match.
+    confirmSelect.addEventListener('change', () => {
+        confirmError.style.display =
+            confirmSelect.value && confirmSelect.value !== mainSelect.value ? 'block' : 'none';
+    });
+
+    // Prevent form submission if the two selects don't match.
+    document.querySelector('form').addEventListener('submit', e => {
+        if (!mainSelect.value) {
+            e.preventDefault();
+            return;
+        }
+        if (mainSelect.value !== confirmSelect.value) {
+            e.preventDefault();
+            confirmError.textContent = confirmSelect.value
+                ? 'Answers do not match.'
+                : 'Please confirm the correct answer.';
+            confirmError.style.display = 'block';
+        }
+    });
+
+</script>
 </body>
 </html>

@@ -1,12 +1,32 @@
 package com.app.questionnaire.model;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
+/**
+ * Represents a registered user in the system.
+ * Mapped to the "app_user" table (PostgreSQL reserves "user" as a keyword).
+ */
+@Entity
+@Table(name = "app_user")
 public class User {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     @NotBlank
+    @Column(unique = true, nullable = false)
     private String username;
 
     @NotBlank(message = "Email is required.")
@@ -18,16 +38,27 @@ public class User {
     @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).*$",
             message = "The password must contain uppercase letters, numbers, and special characters.")
     private String password;
+
+    @Enumerated(EnumType.STRING)
     private Role role;
 
-    public User (String username, String email, String password, Role role) {
+    public User(String username, String email, String password, Role role) {
         this.username = username;
         this.email = email;
         this.password = password;
         this.role = role;
     }
 
-    public User(){}
+    public User() {}
+
+    // ── Getters and setters ──
+
+    public Long getId() {
+        return id;
+    }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getUsername() {
         return username;
@@ -63,6 +94,6 @@ public class User {
                 User:
                 username= %s
                 role= %s
-                """,username, role);
+                """, username, role);
     }
 }

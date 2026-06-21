@@ -2,43 +2,40 @@ package com.app.questionnaire.service;
 
 import com.app.questionnaire.model.Role;
 import com.app.questionnaire.model.User;
+import com.app.questionnaire.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import java.util.ArrayList;
-import java.util.List;
 import static org.springframework.security.core.userdetails.User.builder;
 
 /**
  * User management service for the questionnaire system.
  * Implements Spring Security's UserDetailsService for authentication.
- * */
+ * Uses PostgreSQL via UserRepository instead of in-memory storage.
+ */
 @Service
 public class QuizUserDetailsService implements UserDetailsService {
 
-    private List<User> users = new ArrayList<>();
+    private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    /**
-     * Constructor for the user service.
-     * @param passwordEncoder password encoder for secure storage
-     * */
-    public QuizUserDetailsService(PasswordEncoder passwordEncoder) {
+    public QuizUserDetailsService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
     /**
-     * Loads a user by username for authentication
-     * @param username username to search for
-     * @return UserDetails object with user information for Spring Security
-     * @throws UsernameNotFoundException if the user does not exist
-     * */
+     * Loads a user by username for Spring Security authentication.
+     * @param username the username to look up
+     * @return UserDetails with encoded password and role
+     * @throws UsernameNotFoundException if the user is not found
+     */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-
-        User user = findUserByUsername(username);
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
 
         return builder()
                 .username(user.getUsername())
@@ -48,19 +45,16 @@ public class QuizUserDetailsService implements UserDetailsService {
     }
 
     /**
-     * Registers a new user in the system.
+     * Registers a new user in the database.
      * @param username unique username
-     * @param password unencoded password
-     * @param email user's email address
-     * @param role role assigned to the user
-     * @return User object of the registered user
-     * @throws IllegalArgumentException if the user already exists
-     * */
+     * @param password raw password (will be BCrypt-encoded)
+     * @param email    user's email address
+     * @param role     ADMIN or USER
+     * @return the persisted User
+     * @throws IllegalArgumentException if the username already exists
+     */
     public User registerUsers(String username, String password, String email, Role role) {
-
-        boolean userExists = users.stream()
-                .anyMatch(u -> u.getUsername().equals(username));
-        if(userExists) {
+        if (userRepository.existsByUsername(username)) {
             throw new IllegalArgumentException("User already exists.");
         }
         User newUser = new User();
@@ -69,20 +63,17 @@ public class QuizUserDetailsService implements UserDetailsService {
         newUser.setEmail(email);
         newUser.setRole(role);
 
-        users.add(newUser);
-        return newUser;
+        return userRepository.save(newUser);
     }
 
     /**
-     * Finds a user by username
-     * @param username username to search for
-     * @return User object of the found user
-     * @throws UsernameNotFoundException if the user is not found
-     * */
+     * Finds a user by username.
+     * @param username the username to look up
+     * @return the User entity
+     * @throws UsernameNotFoundException if not found
+     */
     public User findUserByUsername(String username) {
-        return users.stream()
-                .filter(u -> u.getUsername().equals(username))
-                .findFirst()
-                .orElseThrow(()-> new UsernameNotFoundException("User not found."));
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
     }
 }

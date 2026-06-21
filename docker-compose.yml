@@ -1,12 +1,33 @@
-
 services:
+
+  # ── PostgreSQL Database ──
+  db:
+    image: postgres:16-alpine
+    container_name: questionnaire-db
+    env_file:
+      - .env
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  # ── Spring Boot Application ──
   app:
     build:
       context: .
-
     container_name: questionnaire-app
-
     ports:
       - "8080:8080"
-
+    env_file:
+      - .env
+    depends_on:
+      db:
+        condition: service_healthy
     restart: unless-stopped
+
+volumes:
+  pgdata:

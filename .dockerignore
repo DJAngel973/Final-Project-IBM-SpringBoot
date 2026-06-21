@@ -1,5 +1,6 @@
 target
 *.md
+.env
 .git/
 .idea/
 .mvn/

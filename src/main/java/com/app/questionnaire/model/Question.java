@@ -1,10 +1,30 @@
 package com.app.questionnaire.model;
 
-import jakarta.validation.constraints.*;
+import jakarta.persistence.CollectionTable;
+import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represents a quiz question with four options and one correct answer.
+ * Options are stored in a separate table via @ElementCollection.
+ */
+@Entity
+@Table(name = "question")
 public class Question {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @NotBlank(message = "Question text is required.")
@@ -12,6 +32,12 @@ public class Question {
 
     @NotNull(message = "Options are required")
     @Size(min = 4, max = 4, message = "Must have exactly 4 options")
+    @ElementCollection
+    @CollectionTable(
+        name = "question_options",
+        joinColumns = @JoinColumn(name = "question_id")
+    )
+    @Column(name = "option_text")
     private List<String> options;
 
     @NotBlank(message = "The correct answer is required.")
@@ -27,6 +53,8 @@ public class Question {
     public Question() {
         this.options = new ArrayList<>();
     }
+
+    // ── Getters and setters ──
 
     public Integer getId() {
         return id;
@@ -56,6 +84,7 @@ public class Question {
         this.correctAnswer = correctAnswer;
     }
 
+    @Override
     public String toString() {
         return String.format("""
                 Question:

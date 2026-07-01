@@ -217,6 +217,8 @@ public class QuestionController {
      * */
     @GetMapping("/quiz")
     public String showAnswer(Model model, Principal principal) {
+        String username = principal.getName();
+        questionsService.clearResults(username);
         List<Question> questions = questionsService.loadQuizzes();
         List<Question> shuffledQuestions = questions.stream()
                 .map(q -> {

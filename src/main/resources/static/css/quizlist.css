@@ -64,7 +64,8 @@ tbody td {
 }
 
 .btn {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
     padding: 8px 18px;
     font-size: 14px;
     font-weight: 600;
@@ -73,6 +74,8 @@ tbody td {
     cursor: pointer;
     text-decoration: none;
     transition: all 0.3s ease;
+    font-family: inherit;
+    line-height: 1.4;
 }
 
 .btn-primary {

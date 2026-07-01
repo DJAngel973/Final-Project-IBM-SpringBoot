@@ -137,6 +137,16 @@ public class QuestionsService {
     }
 
     /**
+     * Clears all quiz results for a user so they start fresh on their next attempt.
+     * Called when the user loads the quiz page (/quiz GET).
+     * @param username the user whose results should be cleared
+     */
+    public void clearResults(String username) {
+        userAnswersMap.remove(username);
+        userResultsMap.remove(username);
+    }
+
+    /**
      * Retrieves quiz results for a specific user.
      * @param username the user
      * @return map of questions to correctness (true/false)
